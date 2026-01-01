@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Gestion Pédagogique</string>
+    <string name="welcome_title">Bienvenue</string>
+    <string name="welcome_subtitle">Gestion Pédagogique ENSA</string>
+    <string name="app_description_title">À propos de l\'application</string>
+    <string name="app_description">Système de gestion pédagogique pour l\'École Nationale des Sciences Appliquées de Tétouan. Optimisez la gestion des formations, cahiers de charges, emplois du temps et réunions pédagogiques.</string>
+    <string name="features_title">Fonctionnalités principales</string>
+    <string name="feature_formation">Gestion des formations (initiale et continue)</string>
+    <string name="feature_cahier">Gestion des cahiers de charges</string>
+    <string name="feature_emploi">Élaboration et consultation des emplois du temps</string>
+    <string name="feature_reunion">Planification des réunions pédagogiques</string>
+    <string name="get_started">Commencer</string>
+    <string name="footer_text">© 2024 ENSA Tétouan - Tous droits réservés</string>
+    <string name="login_title">Connexion</string>
+    <string name="login_subtitle">Connectez-vous pour accéder au système</string>
+    <string name="username_hint">Nom d\'utilisateur</string>
+    <string name="password_hint">Mot de passe</string>
+    <string name="login_button">Se connecter</string>
+    <string name="forgot_password">Mot de passe oublié ?</string>
+    <string name="remember_me">Se souvenir de moi</string>
+    <string name="back">Retour</string>
+    <string name="welcome_user">Bienvenue !</string>
+    <string name="user_name_label">Nom</string>
+    <string name="user_type_label">Type d\'utilisateur</string>
+    <string name="user_type_admin">Directeur Adjoint</string>
+    <string name="user_type_prof_assistant">Professeur Assistant</string>
+    <string name="user_type_prof_vacataire">Professeur Vacataire</string>
+    <string name="home_info_message">Vous êtes connecté avec succès. Le tableau de bord sera disponible prochainement.</string>
+    <string name="login_error">Nom d\'utilisateur ou mot de passe incorrect</string>
+</resources>
