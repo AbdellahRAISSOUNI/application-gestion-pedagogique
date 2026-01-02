@@ -3,6 +3,8 @@
 **Dernière mise à jour :** 2024-12-19  
 **Version :** 1.0
 
+> ⚠️ **IMPORTANT :** Cette documentation doit être mise à jour à chaque ajout de fonctionnalité, modification d'architecture, ou changement important dans le projet.
+
 ## 📋 Table des Matières
 
 1. [Vue d'ensemble](#vue-densemble)
@@ -15,6 +17,7 @@
 8. [Technologies Utilisées](#technologies-utilisées)
 9. [Guide de Développement](#guide-de-développement)
 10. [État du Projet](#état-du-projet)
+11. [Changelog](#changelog)
 
 ---
 
@@ -580,3 +583,75 @@ Pour toute question ou problème :
 
 **Dernière mise à jour :** 2024-12-19  
 **Maintenu par :** Équipe de développement ENSA
+
+---
+
+## 📅 Changelog
+
+### Version 1.0 - 2024-12-19
+
+#### Fonctionnalités Ajoutées
+- ✅ Système d'authentification complet (WelcomeActivity, LoginActivity)
+- ✅ Page d'accueil post-connexion (HomeActivity)
+- ✅ Tableau de bord adaptatif selon le type d'utilisateur (DashboardActivity)
+- ✅ Consultation des emplois du temps avec recherche (EmploiTempsActivity)
+
+#### Base de Données
+- ✅ Création de toutes les entités Room (7 entités)
+- ✅ Création de tous les DAOs (7 DAOs)
+- ✅ Initialisation automatique des données de test
+- ✅ Méthode pour ajouter les emplois du temps si manquants
+
+#### Infrastructure
+- ✅ Configuration Room Database
+- ✅ Application class pour initialisation
+- ✅ Structure de navigation complète
+- ✅ Design Material Design 3
+
+#### Documentation
+- ✅ Documentation complète du projet créée
+- ✅ README mis à jour
+
+---
+
+### Instructions pour Mettre à Jour la Documentation
+
+**À chaque modification importante :**
+
+1. **Ajout de fonctionnalité :**
+   - Mettre à jour la section "Fonctionnalités Implémentées"
+   - Ajouter dans "État du Projet"
+   - Ajouter une entrée dans le Changelog
+
+2. **Modification d'entité/DAO :**
+   - Mettre à jour la section "Base de Données"
+   - Documenter les nouveaux champs/méthodes
+
+3. **Ajout de fichier/package :**
+   - Mettre à jour "Structure du Projet"
+   - Documenter le rôle du nouveau composant
+
+4. **Changement d'architecture :**
+   - Mettre à jour "Architecture"
+   - Documenter les raisons du changement
+
+5. **Mise à jour des dépendances :**
+   - Mettre à jour "Technologies Utilisées"
+   - Mettre à jour "Configuration et Dépendances"
+
+**Format du Changelog :**
+```markdown
+### Version X.X - YYYY-MM-DD
+
+#### Fonctionnalités Ajoutées
+- ✅ Description de la fonctionnalité
+
+#### Modifications
+- 🔄 Description de la modification
+
+#### Corrections
+- 🐛 Description du bug corrigé
+
+#### Améliorations
+- ⚡ Description de l'amélioration
+```
