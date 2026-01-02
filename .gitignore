@@ -101,3 +101,8 @@ Thumbs.db
 
 # Room database schemas
 app/schemas/
+
+# Documentation files (keep PROJECT_DOCUMENTATION.md and README.md)
+*.md
+!README.md
+!PROJECT_DOCUMENTATION.md

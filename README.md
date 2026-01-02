@@ -72,8 +72,7 @@ La base de données Room contient les entités suivantes :
 
 ## 📝 Documentation
 
-- [Cahier des charges](CAHIER_DE_CHARGE.md)
-- [Configuration de la base de données](DATABASE_SETUP.md)
+- **[Documentation complète du projet](PROJECT_DOCUMENTATION.md)** - Documentation technique complète pour le développement
 
 ## 📄 Licence
 
