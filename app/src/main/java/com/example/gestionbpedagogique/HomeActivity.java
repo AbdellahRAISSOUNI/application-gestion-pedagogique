@@ -63,6 +63,15 @@ public class HomeActivity extends AppCompatActivity {
             // Translate user type to French
             String userTypeFrench = translateUserType(user.userType);
             userTypeText.setText(userTypeFrench);
+            
+            // Navigate to dashboard after a short delay
+            findViewById(R.id.main).postDelayed(() -> {
+                Intent intent = new Intent(HomeActivity.this, DashboardActivity.class);
+                intent.putExtra("USER_ID", userId);
+                startActivity(intent);
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }, 2000); // 2 seconds delay to show welcome message
         } else {
             // User not found, go back to login
             finish();

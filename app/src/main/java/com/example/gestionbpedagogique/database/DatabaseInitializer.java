@@ -11,6 +11,7 @@ import com.example.gestionbpedagogique.database.entities.ReunionParticipant;
 import com.example.gestionbpedagogique.database.entities.EmploiTemps;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class DatabaseInitializer {
     
@@ -18,14 +19,20 @@ public class DatabaseInitializer {
         AppDatabase db = AppDatabase.getDatabase(context);
         
         // Check if database is already initialized
-        if (db.userDao().getAllUsers().size() > 0) {
-            return; // Database already initialized
+        boolean usersExist = db.userDao().getAllUsers().size() > 0;
+        boolean emploiTempsExist = db.emploiTempsDao().getAllEmploiTemps().size() > 0;
+        
+        if (!usersExist) {
+            // Initialize with sample data
+            initializeUsers(db);
+            initializeFormations(db);
+            initializeModules(db);
         }
         
-        // Initialize with sample data
-        initializeUsers(db);
-        initializeFormations(db);
-        initializeModules(db);
+        // Always initialize emploi temps if they don't exist
+        if (!emploiTempsExist) {
+            initializeEmploiTemps(db);
+        }
     }
     
     private static void initializeUsers(AppDatabase db) {
@@ -147,5 +154,63 @@ public class DatabaseInitializer {
         Module module6 = new Module("RESEAU201", "Réseaux", 40, ingFormation.id);
         
         db.moduleDao().insertModules(module4, module5, module6);
+    }
+    
+    private static void initializeEmploiTemps(AppDatabase db) {
+        // Get users
+        User profAssistant1 = db.userDao().getUserByUsername("prof.assistant1");
+        User profAssistant2 = db.userDao().getUserByUsername("prof.assistant2");
+        User profVacataire = db.userDao().getUserByUsername("prof.vacataire");
+        
+        // Get modules by code
+        List<Module> allModules = db.moduleDao().getAllModules();
+        Module algoModule = null;
+        Module bdModule = null;
+        Module mathModule = null;
+        
+        for (Module m : allModules) {
+            if ("ALGO201".equals(m.code)) algoModule = m;
+            if ("BD201".equals(m.code)) bdModule = m;
+            if ("MATH101".equals(m.code)) mathModule = m;
+        }
+        
+        if (profAssistant1 != null && algoModule != null) {
+            EmploiTemps et1 = new EmploiTemps(
+                profAssistant1.id, algoModule.id, "LUNDI", "08:00", "10:00", "Salle 101", "CM"
+            );
+            db.emploiTempsDao().insertEmploiTemps(et1);
+            
+            EmploiTemps et2 = new EmploiTemps(
+                profAssistant1.id, algoModule.id, "MERCREDI", "14:00", "16:00", "Salle 102", "TD"
+            );
+            db.emploiTempsDao().insertEmploiTemps(et2);
+        }
+        
+        if (profAssistant2 != null && bdModule != null) {
+            EmploiTemps et3 = new EmploiTemps(
+                profAssistant2.id, bdModule.id, "MARDI", "10:00", "12:00", "Salle 201", "CM"
+            );
+            db.emploiTempsDao().insertEmploiTemps(et3);
+            
+            EmploiTemps et4 = new EmploiTemps(
+                profAssistant2.id, bdModule.id, "JEUDI", "14:00", "16:00", "Salle 202", "TP"
+            );
+            db.emploiTempsDao().insertEmploiTemps(et4);
+        }
+        
+        if (profVacataire != null && mathModule != null) {
+            EmploiTemps et5 = new EmploiTemps(
+                profVacataire.id, mathModule.id, "VENDREDI", "08:00", "10:00", "Salle 301", "CM"
+            );
+            db.emploiTempsDao().insertEmploiTemps(et5);
+        }
+    }
+    
+    // Method to force add emploi temps data (useful if database was created before this feature)
+    public static void addEmploiTempsIfMissing(Context context) {
+        AppDatabase db = AppDatabase.getDatabase(context);
+        if (db.emploiTempsDao().getAllEmploiTemps().size() == 0) {
+            initializeEmploiTemps(db);
+        }
     }
 }

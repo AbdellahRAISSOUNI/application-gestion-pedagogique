@@ -29,6 +29,14 @@
             android:name=".HomeActivity"
             android:exported="false"
             android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".EmploiTempsActivity"
+            android:exported="false"
+            android:parentActivityName=".DashboardActivity" />
     </application>
 
 </manifest>
