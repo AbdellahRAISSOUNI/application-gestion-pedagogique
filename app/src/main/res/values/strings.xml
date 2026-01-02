@@ -42,4 +42,11 @@
     <string name="heure_label">Heure</string>
     <string name="salle_label">Salle</string>
     <string name="type_cours_label">Type</string>
+    <string name="edit_emploi_temps_title">Élaborer Emploi du Temps</string>
+    <string name="module_label">Module</string>
+    <string name="heure_debut_hint">Heure de début</string>
+    <string name="heure_fin_hint">Heure de fin</string>
+    <string name="save_button">Enregistrer</string>
+    <string name="add_emploi_temps">Ajouter</string>
+    <string name="edit_emploi_temps">Modifier</string>
 </resources>

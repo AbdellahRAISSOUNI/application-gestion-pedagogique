@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    tools:context=".EmploiTempsEditActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_emploi_temps_title"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Form Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Professeur Spinner -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/professeur_label"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/professeur_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Module Spinner -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/module_label"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/module_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Jour Spinner -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/jour_label"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/jour_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Heure Début -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/heure_debut_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/heure_debut_hint"
+                        app:boxStrokeColor="@color/primary_blue"
+                        app:hintTextColor="@color/primary_blue"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@android:drawable/ic_menu_recent_history"
+                        app:endIconTint="@color/primary_blue"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/heure_debut_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:hint="HH:mm"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Heure Fin -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/heure_fin_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/heure_fin_hint"
+                        app:boxStrokeColor="@color/primary_blue"
+                        app:hintTextColor="@color/primary_blue"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@android:drawable/ic_menu_recent_history"
+                        app:endIconTint="@color/primary_blue"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/heure_fin_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:hint="HH:mm"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Salle -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/salle_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/salle_label"
+                        app:boxStrokeColor="@color/primary_blue"
+                        app:hintTextColor="@color/primary_blue"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/salle_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Type Cours Spinner -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/type_cours_label"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/type_cours_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Save Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/save_button"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/primary_blue"
+                app:cornerRadius="12dp"
+                app:elevation="2dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

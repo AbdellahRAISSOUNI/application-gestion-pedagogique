@@ -37,6 +37,10 @@
             android:name=".EmploiTempsActivity"
             android:exported="false"
             android:parentActivityName=".DashboardActivity" />
+        <activity
+            android:name=".EmploiTempsEditActivity"
+            android:exported="false"
+            android:parentActivityName=".EmploiTempsActivity" />
     </application>
 
 </manifest>

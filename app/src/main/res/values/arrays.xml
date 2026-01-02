@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="jours_semaine">
+        <item>Lundi</item>
+        <item>Mardi</item>
+        <item>Mercredi</item>
+        <item>Jeudi</item>
+        <item>Vendredi</item>
+        <item>Samedi</item>
+    </array>
+    
+    <array name="types_cours">
+        <item>CM</item>
+        <item>TD</item>
+        <item>TP</item>
+    </array>
+</resources>

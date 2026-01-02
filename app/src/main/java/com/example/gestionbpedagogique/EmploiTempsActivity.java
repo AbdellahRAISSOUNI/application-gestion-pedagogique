@@ -1,5 +1,6 @@
 package com.example.gestionbpedagogique;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +34,7 @@ public class EmploiTempsActivity extends AppCompatActivity {
     private EmploiTempsAdapter adapter;
     private EditText searchEditText;
     private TextView emptyStateText;
+    private com.google.android.material.button.MaterialButton addButton;
     private long userId;
     private String userType;
     private List<EmploiTempsItem> allItems = new ArrayList<>();
@@ -58,15 +60,34 @@ public class EmploiTempsActivity extends AppCompatActivity {
         loadEmploiTemps();
         setupSearch();
     }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload data when returning from edit activity
+        loadEmploiTemps();
+    }
 
     private void initializeViews() {
         recyclerView = findViewById(R.id.recycler_view);
         searchEditText = findViewById(R.id.search_edit_text);
         emptyStateText = findViewById(R.id.empty_state_text);
+        addButton = findViewById(R.id.add_button);
         
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new EmploiTempsAdapter(new ArrayList<>());
+        adapter = new EmploiTempsAdapter(new ArrayList<>(), null, userId, this);
         recyclerView.setAdapter(adapter);
+    }
+    
+    private void setupAddButton() {
+        if ("ADMIN".equals(userType) && addButton != null) {
+            addButton.setVisibility(View.VISIBLE);
+            addButton.setOnClickListener(v -> {
+                Intent intent = new Intent(EmploiTempsActivity.this, EmploiTempsEditActivity.class);
+                intent.putExtra("USER_ID", userId);
+                startActivity(intent);
+            });
+        }
     }
 
     private void loadEmploiTemps() {
@@ -111,8 +132,11 @@ public class EmploiTempsActivity extends AppCompatActivity {
             }
 
             runOnUiThread(() -> {
-                adapter.updateItems(allItems);
+                // Update adapter with user type after loading
+                adapter = new EmploiTempsAdapter(allItems, userType, userId, this);
+                recyclerView.setAdapter(adapter);
                 updateEmptyState();
+                setupAddButton();
             });
         }).start();
     }

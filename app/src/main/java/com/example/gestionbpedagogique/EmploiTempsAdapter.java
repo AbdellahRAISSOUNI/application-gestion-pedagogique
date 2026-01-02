@@ -1,5 +1,6 @@
 package com.example.gestionbpedagogique;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,15 @@ import java.util.List;
 public class EmploiTempsAdapter extends RecyclerView.Adapter<EmploiTempsAdapter.ViewHolder> {
 
     private List<EmploiTempsActivity.EmploiTempsItem> items;
+    private String userType;
+    private long userId;
+    private EmploiTempsActivity activity;
 
-    public EmploiTempsAdapter(List<EmploiTempsActivity.EmploiTempsItem> items) {
+    public EmploiTempsAdapter(List<EmploiTempsActivity.EmploiTempsItem> items, String userType, long userId, EmploiTempsActivity activity) {
         this.items = items;
+        this.userType = userType;
+        this.userId = userId;
+        this.activity = activity;
     }
 
     @NonNull
@@ -29,7 +36,7 @@ public class EmploiTempsAdapter extends RecyclerView.Adapter<EmploiTempsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EmploiTempsActivity.EmploiTempsItem item = items.get(position);
-        holder.bind(item);
+        holder.bind(item, userType, userId, activity);
     }
 
     @Override
@@ -62,7 +69,7 @@ public class EmploiTempsAdapter extends RecyclerView.Adapter<EmploiTempsAdapter.
             typeCoursText = itemView.findViewById(R.id.type_cours_text);
         }
 
-        void bind(EmploiTempsActivity.EmploiTempsItem item) {
+        void bind(EmploiTempsActivity.EmploiTempsItem item, String userType, long userId, EmploiTempsActivity activity) {
             moduleNameText.setText(item.moduleName);
             moduleCodeText.setText(item.moduleCode);
             professeurNameText.setText(item.professeurName);
@@ -70,6 +77,18 @@ public class EmploiTempsAdapter extends RecyclerView.Adapter<EmploiTempsAdapter.
             heureText.setText(item.heureDebut + " - " + item.heureFin);
             salleText.setText(item.salle);
             typeCoursText.setText(item.typeCours);
+            
+            // Make item clickable for admin to edit
+            if ("ADMIN".equals(userType)) {
+                itemView.setOnClickListener(v -> {
+                    Intent intent = new Intent(activity, EmploiTempsEditActivity.class);
+                    intent.putExtra("USER_ID", userId);
+                    intent.putExtra("EMPLOI_TEMPS_ID", item.id);
+                    activity.startActivity(intent);
+                });
+            } else {
+                itemView.setOnClickListener(null);
+            }
         }
 
         private String translateDay(String day) {

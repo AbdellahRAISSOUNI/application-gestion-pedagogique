@@ -1,7 +1,7 @@
 # Documentation du Projet - Gestion Pédagogique ENSA
 
 **Dernière mise à jour :** 2024-12-19  
-**Version :** 1.0
+**Version :** 1.2
 
 > ⚠️ **IMPORTANT :** Cette documentation doit être mise à jour à chaque ajout de fonctionnalité, modification d'architecture, ou changement important dans le projet.
 
@@ -78,6 +78,9 @@ com.example.gestionbpedagogique/
 ├── DashboardActivity.java            # Tableau de bord principal
 ├── EmploiTempsActivity.java          # Consultation emplois du temps
 ├── EmploiTempsAdapter.java           # Adapter pour RecyclerView
+├── EmploiTempsEditActivity.java      # Création/Modification emplois du temps (Admin)
+├── UserSpinnerAdapter.java           # Adapter personnalisé pour spinner des utilisateurs
+├── ModuleSpinnerAdapter.java          # Adapter personnalisé pour spinner des modules
 └── GestionPedagogiqueApp.java        # Application class
 ```
 
@@ -205,6 +208,7 @@ com.example.gestionbpedagogique/
 - `activity_home.xml` - Page d'accueil après connexion
 - `activity_dashboard.xml` - Tableau de bord
 - `activity_emploi_temps.xml` - Consultation emplois du temps
+- `activity_emploi_temps_edit.xml` - Formulaire création/modification emploi du temps
 - `item_emploi_temps.xml` - Item de la liste des emplois du temps
 
 ### Ressources (res/values/)
@@ -226,7 +230,7 @@ com.example.gestionbpedagogique/
 
 ## ✨ Fonctionnalités Implémentées
 
-### ✅ Complétées
+### ✅ Complétées (5/8) - 100% fonctionnel
 
 #### 1. Authentification
 - **Fichiers :** `WelcomeActivity.java`, `LoginActivity.java`
@@ -258,12 +262,28 @@ com.example.gestionbpedagogique/
   - Liste des emplois du temps avec RecyclerView
   - Recherche en temps réel (professeur, module, jour, salle, type)
   - Affichage adaptatif :
-    - Admin : voit tous les emplois du temps
-    - Autres : voient uniquement leurs propres emplois
+    - Admin : voit tous les emplois du temps + bouton "Ajouter" + clic pour éditer
+    - Autres : voient uniquement leurs propres emplois (lecture seule)
   - État vide géré
   - Design Material Design 3
 
-### 🚧 À Implémenter
+#### 5. Élaborer Emploi du Temps (Admin)
+- **Fichiers :** `EmploiTempsEditActivity.java`, `UserSpinnerAdapter.java`, `ModuleSpinnerAdapter.java`
+- **Fonctionnalités :**
+  - Créer un nouvel emploi du temps
+  - Modifier un emploi du temps existant (clic sur item dans la liste)
+  - Formulaire avec :
+    - Sélection du professeur (spinner avec affichage du nom complet)
+    - Sélection du module (spinner avec affichage du nom)
+    - Sélection du jour (spinner)
+    - **Heure de début et fin : TimePickerDialog** (sélection visuelle, format 24h)
+    - Salle (texte)
+    - Type de cours (CM, TD, TP)
+  - Validation des champs
+  - Sauvegarde en base de données
+  - **TimePicker intégré :** Les champs d'heure utilisent un TimePickerDialog natif pour éviter les erreurs de format
+
+### 🚧 À Implémenter (3/8)
 
 #### 1. Planifier une Réunion (Admin)
 - Sélection des professeurs à inviter
@@ -283,10 +303,12 @@ com.example.gestionbpedagogique/
 - Ajout/modification de modules
 - Recherche et filtrage
 
-#### 4. Élaborer Emploi du Temps (Admin)
-- Créer des emplois du temps
-- Modifier des créneaux existants
-- Recherche et filtrage
+#### 4. Élaborer Emploi du Temps (Admin) ✅ COMPLÉTÉ
+- ✅ Créer des emplois du temps
+- ✅ Modifier des créneaux existants
+- ✅ Formulaire complet avec validation
+- ✅ TimePickerDialog pour sélection des heures (évite les erreurs de format)
+- ✅ Spinners personnalisés pour affichage correct des noms
 
 ---
 
@@ -297,10 +319,10 @@ com.example.gestionbpedagogique/
 
 **Fonctionnalités :**
 - ✅ Consulter tous les emplois du temps
+- ✅ Élaborer les emplois du temps (créer, modifier)
 - 🚧 Planifier des réunions
 - 🚧 Envoyer cahiers de charges à la présidence/ministère
 - 🚧 Traiter les formations (ajouter, modifier)
-- 🚧 Élaborer les emplois du temps (créer, modifier)
 
 ### 2. PROFESSEUR_ASSISTANT (Professeur Assistant)
 **Permissions :** Droits limités
@@ -453,44 +475,47 @@ DashboardActivity → WelcomeActivity (avec clear task)
 
 ## 📊 État du Projet
 
-### Version Actuelle : 1.0
+### Version Actuelle : 1.2
 
-#### Fonctionnalités Complétées (4/8)
+#### Fonctionnalités Complétées (5/8)
 - ✅ Authentification complète
 - ✅ Page d'accueil et navigation
 - ✅ Tableau de bord avec menu adaptatif
 - ✅ Consultation des emplois du temps
+- ✅ Élaboration des emplois du temps (création/modification avec TimePicker)
 
 #### Fonctionnalités En Cours (0/8)
 - Aucune
 
-#### Fonctionnalités À Faire (4/8)
+#### Fonctionnalités À Faire (3/8)
 - 🚧 Planifier une réunion (Admin)
 - 🚧 Envoyer cahier de charges (Admin + Professeur Assistant)
 - 🚧 Traiter formation (Admin)
-- 🚧 Élaborer emploi du temps (Admin - création/modification)
 
 ### Prochaines Étapes Suggérées
 
-1. **Implémenter "Élaborer Emploi du Temps" (Admin)**
-   - Créer/modifier des emplois du temps
-   - Formulaire d'ajout
-   - Édition des créneaux existants
+**Prochaine fonctionnalité recommandée : "Planifier une Réunion" (Admin)**
 
-2. **Implémenter "Planifier une Réunion" (Admin)**
-   - Sélection multiple de professeurs
-   - Date picker
-   - Envoi d'invitations
+1. **Implémenter "Planifier une Réunion" (Admin)**
+   - Créer `ReunionActivity` et `ReunionEditActivity`
+   - Sélection multiple de professeurs (checkboxes)
+   - Date picker et TimePicker pour date/heure
+   - Champ ordre du jour (textarea)
+   - Enregistrement en base de données
+   - Affichage des réunions planifiées
+   - Gestion des participants (ReunionParticipant)
 
-3. **Implémenter "Envoyer Cahier de Charges"**
-   - Upload de fichiers
-   - Gestion des statuts
+2. **Implémenter "Envoyer Cahier de Charges"**
+   - Upload de fichiers (Storage Access Framework)
+   - Gestion des statuts (BROUILLON, ENVOYE, APPROUVE, REFUSE)
    - Workflow d'approbation
+   - Différents workflows selon le type d'utilisateur
 
-4. **Implémenter "Traiter Formation"**
-   - CRUD formations
-   - Gestion des modules
-   - Recherche et filtrage
+3. **Implémenter "Traiter Formation"**
+   - CRUD formations (créer, lire, modifier, supprimer)
+   - Gestion des modules associés
+   - Recherche et filtrage par type/cycle
+   - Validation des formations
 
 ### Améliorations Futures
 
@@ -587,6 +612,38 @@ Pour toute question ou problème :
 ---
 
 ## 📅 Changelog
+
+### Version 1.2 - 2024-12-19
+
+#### Améliorations
+- ⚡ **TimePickerDialog intégré** : Les champs d'heure utilisent maintenant un TimePickerDialog natif au lieu de saisie manuelle
+  - Évite les erreurs de format "HH:mm"
+  - Interface plus intuitive avec sélection visuelle
+  - Format 24h automatique
+  - Champs en lecture seule avec icône d'horloge cliquable
+- 🔄 **Spinners personnalisés** : Création de `UserSpinnerAdapter` et `ModuleSpinnerAdapter` pour afficher correctement les noms au lieu de "com.example..."
+
+#### Corrections
+- 🐛 Correction de l'affichage des spinners (professeur et module) qui affichaient "com.example..." au lieu des noms
+- 🐛 Correction du bouton "Ajouter" qui ne fonctionnait pas correctement
+
+---
+
+### Version 1.1 - 2024-12-19
+
+#### Fonctionnalités Ajoutées
+- ✅ Élaborer emploi du temps (Admin) - Création et modification
+- ✅ Formulaire complet avec spinners pour professeur, module, jour, type
+- ✅ Validation des champs (format heure, champs requis)
+- ✅ Navigation depuis la liste (clic sur item pour éditer)
+- ✅ Bouton "Ajouter" visible uniquement pour Admin
+
+#### Modifications
+- 🔄 EmploiTempsActivity : Ajout du bouton "Ajouter" pour Admin
+- 🔄 EmploiTempsAdapter : Ajout du clic pour éditer (Admin uniquement)
+- 🔄 Layouts : Nouveau layout pour le formulaire d'édition
+
+---
 
 ### Version 1.0 - 2024-12-19
 
