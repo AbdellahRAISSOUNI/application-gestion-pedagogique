@@ -56,7 +56,7 @@ public class ReunionActivity extends AppCompatActivity {
         userId = getIntent().getLongExtra("USER_ID", -1);
         
         initializeViews();
-        loadReunions();
+        loadUserTypeAndReunions();
         setupSearch();
     }
     
@@ -64,7 +64,7 @@ public class ReunionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Reload data when returning from edit activity
-        loadReunions();
+        loadUserTypeAndReunions();
     }
 
     private void initializeViews() {
@@ -76,7 +76,9 @@ public class ReunionActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ReunionAdapter(new ArrayList<>(), userId, userType, this);
         recyclerView.setAdapter(adapter);
-        
+    }
+    
+    private void setupAddButton() {
         // Setup add button (only for Admin)
         if ("ADMIN".equals(userType)) {
             addButton.setVisibility(View.VISIBLE);
@@ -90,14 +92,14 @@ public class ReunionActivity extends AppCompatActivity {
         }
     }
 
-    private void loadReunions() {
+    private void loadUserTypeAndReunions() {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getDatabase(this);
             ReunionDao reunionDao = db.reunionDao();
             ReunionParticipantDao participantDao = db.reunionParticipantDao();
             UserDao userDao = db.userDao();
             
-            // Get current user type
+            // Get current user type first
             User currentUser = userDao.getUserById(userId);
             if (currentUser != null) {
                 userType = currentUser.userType;
@@ -155,6 +157,7 @@ public class ReunionActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 adapter = new ReunionAdapter(allItems, userId, userType, this);
                 recyclerView.setAdapter(adapter);
+                setupAddButton(); // Setup button after userType is loaded
                 updateEmptyState();
             });
         }).start();
