@@ -105,7 +105,9 @@ public class DashboardActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
                 addMenuCard(getString(R.string.menu_envoyer_cahier), android.R.drawable.ic_menu_myplaces, v -> {
-                    Toast.makeText(this, "Envoyer cahier de charges - À venir", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DashboardActivity.this, CahierChargesActivity.class);
+                    intent.putExtra("USER_ID", userId);
+                    startActivity(intent);
                 });
                 addMenuCard(getString(R.string.menu_traiter_formation), android.R.drawable.ic_menu_recent_history, v -> {
                     Toast.makeText(this, "Traiter formation - À venir", Toast.LENGTH_SHORT).show();
@@ -119,7 +121,9 @@ public class DashboardActivity extends AppCompatActivity {
 
             case "PROFESSEUR_ASSISTANT":
                 addMenuCard(getString(R.string.menu_envoyer_cahier), android.R.drawable.ic_menu_myplaces, v -> {
-                    Toast.makeText(this, "Envoyer cahier de charges - À venir", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DashboardActivity.this, CahierChargesActivity.class);
+                    intent.putExtra("USER_ID", userId);
+                    startActivity(intent);
                 });
                 addMenuCard(getString(R.string.menu_consulter_emploi), android.R.drawable.ic_menu_today, v -> {
                     Intent intent = new Intent(DashboardActivity.this, EmploiTempsActivity.class);

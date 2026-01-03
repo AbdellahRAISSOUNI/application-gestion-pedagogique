@@ -233,7 +233,7 @@ com.example.gestionbpedagogique/
 
 ## ✨ Fonctionnalités Implémentées
 
-### ✅ Complétées (6/8) - 100% fonctionnel
+### ✅ Complétées (7/8) - 87.5% fonctionnel
 
 #### 1. Authentification
 - **Fichiers :** `WelcomeActivity.java`, `LoginActivity.java`
@@ -304,15 +304,33 @@ com.example.gestionbpedagogique/
   - État vide géré
   - Design Material Design 3
 
-### 🚧 À Implémenter (2/8)
+#### 7. Envoyer Cahier de Charges
+- **Fichiers :** `CahierChargesActivity.java`, `CahierChargesEditActivity.java`, `CahierChargesAdapter.java`, `FormationSpinnerAdapter.java`
+- **Fonctionnalités :**
+  - Liste des cahiers de charges avec RecyclerView
+  - Recherche en temps réel (titre, type, auteur, statut, formation)
+  - Affichage adaptatif :
+    - Admin : voit tous les cahiers + peut approuver/refuser
+    - Professeur Assistant : voit uniquement les siens + peut créer/envoyer
+  - Statuts avec couleurs (Brouillon, Envoyé, Approuvé, Refusé)
+  - Formulaire de création/modification :
+    - Champ titre avec validation
+    - Sélection du type (Formation Initiale / Formation Continue)
+    - Sélection de la formation (optionnel, spinner avec FormationSpinnerAdapter)
+    - **Upload de fichier via Storage Access Framework** (PDF, images, documents)
+    - Gestion des permissions persistantes pour les URIs
+  - Workflow selon le type d'utilisateur :
+    - **Professeur Assistant :** Créer (BROUILLON) → Envoyer (ENVOYE)
+    - **Admin :** Voir tous → Approuver (APPROUVE) / Refuser (REFUSE) si statut = ENVOYE
+  - Boutons adaptatifs selon le statut et le type d'utilisateur
+  - Sauvegarde en base de données (CahierCharges)
+  - Modification d'un cahier en brouillon (Professeur Assistant uniquement)
+  - État vide géré
+  - Design Material Design 3
 
-#### 1. Envoyer Cahier de Charges
-- **Admin :** Envoyer à la présidence/ministère
-- **Professeur Assistant :** Envoyer au directeur adjoint
-- Upload de documents
-- Gestion des statuts
+### 🚧 À Implémenter (1/8)
 
-#### 2. Traiter Formation (Admin)
+#### 1. Traiter Formation (Admin)
 - Gestion des formations initiales (cycles)
 - Gestion des formations continues (DCA, DCESS)
 - Ajout/modification de modules
@@ -336,7 +354,7 @@ com.example.gestionbpedagogique/
 - ✅ Consulter tous les emplois du temps
 - ✅ Élaborer les emplois du temps (créer, modifier)
 - ✅ Planifier des réunions (créer, modifier, voir liste)
-- 🚧 Envoyer cahiers de charges à la présidence/ministère
+- ✅ Envoyer cahiers de charges (approuver/refuser)
 - 🚧 Traiter les formations (ajouter, modifier)
 
 ### 2. PROFESSEUR_ASSISTANT (Professeur Assistant)
@@ -344,8 +362,8 @@ com.example.gestionbpedagogique/
 
 **Fonctionnalités :**
 - ✅ Consulter ses propres emplois du temps
-- 🚧 Envoyer cahier de charges au directeur adjoint
-- 🚧 Consulter le planning des réunions
+- ✅ Envoyer cahier de charges au directeur adjoint
+- ✅ Consulter le planning des réunions
 
 ### 3. PROFESSEUR_VACATAIRE (Professeur Vacataire)
 **Permissions :** Consultation uniquement
@@ -498,36 +516,37 @@ DashboardActivity → WelcomeActivity (avec clear task)
 
 ## 📊 État du Projet
 
-### Version Actuelle : 1.3
+### Version Actuelle : 1.4
 
-#### Fonctionnalités Complétées (6/8)
+#### Fonctionnalités Complétées (7/8)
 - ✅ Authentification complète
 - ✅ Page d'accueil et navigation
 - ✅ Tableau de bord avec menu adaptatif
 - ✅ Consultation des emplois du temps
 - ✅ Élaboration des emplois du temps (création/modification avec TimePicker)
 - ✅ Planifier une réunion (Admin) - Création, modification, liste avec recherche
+- ✅ Envoyer cahier de charges - Workflow complet pour Admin et Professeur Assistant
 
 #### Fonctionnalités En Cours (0/8)
 - Aucune
 
-#### Fonctionnalités À Faire (2/8)
-- 🚧 Envoyer cahier de charges (Admin + Professeur Assistant)
+#### Fonctionnalités À Faire (1/8)
 - 🚧 Traiter formation (Admin)
 
 ### Prochaines Étapes Suggérées
 
-2. **Implémenter "Envoyer Cahier de Charges"**
-   - Upload de fichiers (Storage Access Framework)
-   - Gestion des statuts (BROUILLON, ENVOYE, APPROUVE, REFUSE)
-   - Workflow d'approbation
-   - Différents workflows selon le type d'utilisateur
+**Prochaine fonctionnalité : "Traiter Formation" (Admin)**
 
-3. **Implémenter "Traiter Formation"**
+1. **Implémenter "Traiter Formation" (Admin)**
+   - Créer `FormationActivity` et `FormationEditActivity`
    - CRUD formations (créer, lire, modifier, supprimer)
-   - Gestion des modules associés
-   - Recherche et filtrage par type/cycle
-   - Validation des formations
+   - Gestion des types (INITIALE, CONTINUE)
+   - Gestion des cycles (PREPARATOIRE, INGENIEUR, MASTER, DCA, DCESS)
+   - Gestion des modules associés (ajouter, modifier, supprimer)
+   - Recherche et filtrage par type/cycle/statut
+   - Validation des formations (APPROUVEE, REFUSEE)
+   - Affichage avec RecyclerView et recherche
+   - Design cohérent avec les autres fonctionnalités
 
 ### Améliorations Futures
 
@@ -619,11 +638,51 @@ Pour toute question ou problème :
 ---
 
 **Dernière mise à jour :** 2024-12-19  
+**Version actuelle :** 1.4  
 **Maintenu par :** Équipe de développement ENSA
 
 ---
 
 ## 📅 Changelog
+
+### Version 1.4 - 2024-12-19
+
+#### Fonctionnalités Ajoutées
+- ✅ **Envoyer Cahier de Charges** - Fonctionnalité complète
+  - Liste des cahiers de charges avec RecyclerView
+  - Recherche en temps réel (titre, type, auteur, statut, formation)
+  - Affichage adaptatif selon le type d'utilisateur
+  - Statuts avec couleurs (Brouillon, Envoyé, Approuvé, Refusé)
+  - Formulaire de création/modification avec validation
+  - Upload de fichier via Storage Access Framework (PDF, images, documents)
+  - Workflow différencié :
+    - Professeur Assistant : Créer (BROUILLON) → Envoyer (ENVOYE)
+    - Admin : Approuver (APPROUVE) / Refuser (REFUSE) si statut = ENVOYE
+  - Boutons adaptatifs selon le statut et le type d'utilisateur
+  - Gestion des permissions persistantes pour les URIs de fichiers
+  - Modification d'un cahier en brouillon (Professeur Assistant uniquement)
+
+#### Fichiers Ajoutés
+- `CahierChargesActivity.java` - Liste des cahiers de charges
+- `CahierChargesEditActivity.java` - Formulaire création/modification
+- `CahierChargesAdapter.java` - Adapter pour RecyclerView
+- `FormationSpinnerAdapter.java` - Adapter personnalisé pour spinner des formations
+- `activity_cahier_charges.xml` - Layout liste
+- `activity_cahier_charges_edit.xml` - Layout formulaire
+- `item_cahier_charges.xml` - Layout item
+
+#### Modifications
+- 🔄 `DashboardActivity.java` : Navigation vers CahierChargesActivity pour Admin et Professeur Assistant
+- 🔄 `AndroidManifest.xml` : Ajout des activités CahierChargesActivity et CahierChargesEditActivity
+- 🔄 `strings.xml` : Ajout de tous les strings nécessaires pour les cahiers de charges
+- 🔄 `arrays.xml` : Ajout de l'array `cahier_types` pour les types de formation
+
+#### Corrections
+- 🐛 Correction de la visibilité des boutons pour les nouveaux cahiers de charges
+- 🐛 Amélioration du file picker pour une meilleure compatibilité avec les émulateurs
+- 🐛 Gestion améliorée des permissions pour les URIs de fichiers
+
+---
 
 ### Version 1.3 - 2024-12-19
 

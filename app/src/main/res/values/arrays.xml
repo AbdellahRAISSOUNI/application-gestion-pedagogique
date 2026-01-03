@@ -14,4 +14,9 @@
         <item>TD</item>
         <item>TP</item>
     </array>
+    
+    <array name="cahier_types">
+        <item>Formation Initiale</item>
+        <item>Formation Continue</item>
+    </array>
 </resources>

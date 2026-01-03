@@ -49,6 +49,14 @@
             android:name=".ReunionEditActivity"
             android:exported="false"
             android:parentActivityName=".ReunionActivity" />
+        <activity
+            android:name=".CahierChargesActivity"
+            android:exported="false"
+            android:parentActivityName=".DashboardActivity" />
+        <activity
+            android:name=".CahierChargesEditActivity"
+            android:exported="false"
+            android:parentActivityName=".CahierChargesActivity" />
     </application>
 
 </manifest>

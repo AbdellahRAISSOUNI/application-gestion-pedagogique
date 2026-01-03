@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/card_background"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Title and Status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/titre_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Titre du cahier"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/statut_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Brouillon"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@android:color/transparent"
+                android:padding="4dp" />
+        </LinearLayout>
+
+        <!-- Type -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_myplaces"
+                app:tint="@color/primary_blue"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/type_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Formation Initiale"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <!-- Auteur -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_myplaces"
+                app:tint="@color/primary_blue"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cahier_auteur_label"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/auteur_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Auteur"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <!-- Formation (if exists) -->
+        <LinearLayout
+            android:id="@+id/formation_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_recent_history"
+                app:tint="@color/primary_blue"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/formation_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Formation"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <!-- Dates -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cahier_date_creation_label"
+                    android:textSize="11sp"
+                    android:textColor="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/date_creation_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01/01/2024"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_primary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/date_validation_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cahier_date_validation_label"
+                    android:textSize="11sp"
+                    android:textColor="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/date_validation_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01/01/2024"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_primary" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

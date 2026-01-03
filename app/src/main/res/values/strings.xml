@@ -71,4 +71,35 @@
     <string name="date_label">Date</string>
     <string name="heure_label_reunion">Heure</string>
     <string name="participants_count">%1$d participant(s)</string>
+    <!-- Cahier de Charges strings -->
+    <string name="cahier_charges_title">Cahiers de Charges</string>
+    <string name="add_cahier_charges">Ajouter un cahier de charges</string>
+    <string name="edit_cahier_charges">Modifier le cahier de charges</string>
+    <string name="cahier_titre_hint">Titre du cahier de charges</string>
+    <string name="cahier_type_hint">Type de formation</string>
+    <string name="cahier_formation_hint">Formation (optionnel)</string>
+    <string name="cahier_file_hint">Fichier</string>
+    <string name="cahier_select_file">Sélectionner un fichier</string>
+    <string name="cahier_file_selected">Fichier sélectionné</string>
+    <string name="cahier_statut_brouillon">Brouillon</string>
+    <string name="cahier_statut_envoye">Envoyé</string>
+    <string name="cahier_statut_approuve">Approuvé</string>
+    <string name="cahier_statut_refuse">Refusé</string>
+    <string name="empty_cahier_charges">Aucun cahier de charges disponible</string>
+    <string name="cahier_created_success">Cahier de charges créé avec succès</string>
+    <string name="cahier_updated_success">Cahier de charges modifié avec succès</string>
+    <string name="cahier_sent_success">Cahier de charges envoyé avec succès</string>
+    <string name="cahier_approved_success">Cahier de charges approuvé</string>
+    <string name="cahier_refused_success">Cahier de charges refusé</string>
+    <string name="cahier_titre_required">Le titre est requis</string>
+    <string name="cahier_type_required">Le type est requis</string>
+    <string name="cahier_file_required">Veuillez sélectionner un fichier</string>
+    <string name="cahier_send_button">Envoyer</string>
+    <string name="cahier_approve_button">Approuver</string>
+    <string name="cahier_refuse_button">Refuser</string>
+    <string name="cahier_auteur_label">Auteur</string>
+    <string name="cahier_date_creation_label">Date de création</string>
+    <string name="cahier_date_validation_label">Date de validation</string>
+    <string name="cahier_type_formation_initiale">Formation Initiale</string>
+    <string name="cahier_type_formation_continue">Formation Continue</string>
 </resources>
