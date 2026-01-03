@@ -19,11 +19,13 @@ public class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHold
 
     private List<ReunionActivity.ReunionItem> items;
     private long userId;
+    private String userType;
     private ReunionActivity activity;
 
-    public ReunionAdapter(List<ReunionActivity.ReunionItem> items, long userId, ReunionActivity activity) {
+    public ReunionAdapter(List<ReunionActivity.ReunionItem> items, long userId, String userType, ReunionActivity activity) {
         this.items = items;
         this.userId = userId;
+        this.userType = userType;
         this.activity = activity;
     }
 
@@ -38,7 +40,7 @@ public class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ReunionActivity.ReunionItem item = items.get(position);
-        holder.bind(item, activity);
+        holder.bind(item, userType, activity);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHold
             ordreDuJourText = itemView.findViewById(R.id.ordre_du_jour_text);
         }
 
-        void bind(ReunionActivity.ReunionItem item, ReunionActivity activity) {
+        void bind(ReunionActivity.ReunionItem item, String userType, ReunionActivity activity) {
             titreText.setText(item.titre);
             
             // Format date and time
@@ -111,18 +113,23 @@ public class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHold
                 participantsText.setVisibility(View.GONE);
             }
             
-            // Make item clickable to edit
-            itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(activity, ReunionEditActivity.class);
-                // Get USER_ID from the activity's intent
-                long userId = -1;
-                if (activity.getIntent() != null) {
-                    userId = activity.getIntent().getLongExtra("USER_ID", -1);
-                }
-                intent.putExtra("USER_ID", userId);
-                intent.putExtra("REUNION_ID", item.id);
-                activity.startActivity(intent);
-            });
+            // Make item clickable to edit (only for Admin)
+            if ("ADMIN".equals(userType)) {
+                itemView.setOnClickListener(v -> {
+                    Intent intent = new Intent(activity, ReunionEditActivity.class);
+                    // Get USER_ID from the activity's intent
+                    long userId = -1;
+                    if (activity.getIntent() != null) {
+                        userId = activity.getIntent().getLongExtra("USER_ID", -1);
+                    }
+                    intent.putExtra("USER_ID", userId);
+                    intent.putExtra("REUNION_ID", item.id);
+                    activity.startActivity(intent);
+                });
+            } else {
+                // Professors can only view, not edit
+                itemView.setOnClickListener(null);
+            }
         }
 
         private String translateStatut(String statut) {

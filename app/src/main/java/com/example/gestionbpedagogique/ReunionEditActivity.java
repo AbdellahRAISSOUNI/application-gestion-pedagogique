@@ -298,10 +298,15 @@ public class ReunionEditActivity extends AppCompatActivity {
                 participantDao.deleteParticipantsByReunion(reunionId);
             }
             
-            // Insert new participants
+            // Insert new participants (avoid duplicates)
+            java.util.Set<Long> insertedParticipantIds = new java.util.HashSet<>();
             for (Long participantId : selectedParticipantIds) {
-                ReunionParticipant participant = new ReunionParticipant(reunionId, participantId);
-                participantDao.insertParticipant(participant);
+                // Avoid inserting duplicate participants
+                if (!insertedParticipantIds.contains(participantId)) {
+                    ReunionParticipant participant = new ReunionParticipant(reunionId, participantId);
+                    participantDao.insertParticipant(participant);
+                    insertedParticipantIds.add(participantId);
+                }
             }
             
             final boolean isNewFinal = isNew;

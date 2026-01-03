@@ -38,6 +38,7 @@ public class ReunionActivity extends AppCompatActivity {
     private TextView emptyStateText;
     private com.google.android.material.button.MaterialButton addButton;
     private long userId;
+    private String userType;
     private List<ReunionItem> allItems = new ArrayList<>();
 
     @Override
@@ -73,15 +74,20 @@ public class ReunionActivity extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ReunionAdapter(new ArrayList<>(), userId, this);
+        adapter = new ReunionAdapter(new ArrayList<>(), userId, userType, this);
         recyclerView.setAdapter(adapter);
         
-        // Setup add button
-        addButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ReunionActivity.this, ReunionEditActivity.class);
-            intent.putExtra("USER_ID", userId);
-            startActivity(intent);
-        });
+        // Setup add button (only for Admin)
+        if ("ADMIN".equals(userType)) {
+            addButton.setVisibility(View.VISIBLE);
+            addButton.setOnClickListener(v -> {
+                Intent intent = new Intent(ReunionActivity.this, ReunionEditActivity.class);
+                intent.putExtra("USER_ID", userId);
+                startActivity(intent);
+            });
+        } else {
+            addButton.setVisibility(View.GONE);
+        }
     }
 
     private void loadReunions() {
@@ -91,7 +97,34 @@ public class ReunionActivity extends AppCompatActivity {
             ReunionParticipantDao participantDao = db.reunionParticipantDao();
             UserDao userDao = db.userDao();
             
-            List<Reunion> reunions = reunionDao.getAllReunions();
+            // Get current user type
+            User currentUser = userDao.getUserById(userId);
+            if (currentUser != null) {
+                userType = currentUser.userType;
+            }
+            
+            List<Reunion> reunions;
+            
+            // Admin sees all reunions, others see only reunions they participate in
+            if ("ADMIN".equals(userType)) {
+                reunions = reunionDao.getAllReunions();
+            } else {
+                // Get reunions where user is a participant
+                List<ReunionParticipant> userParticipations = participantDao.getReunionsByUser(userId);
+                reunions = new ArrayList<>();
+                java.util.Set<Long> addedReunionIds = new java.util.HashSet<>();
+                
+                for (ReunionParticipant participation : userParticipations) {
+                    // Avoid duplicates by checking if we already added this reunion
+                    if (!addedReunionIds.contains(participation.reunionId)) {
+                        Reunion reunion = reunionDao.getReunionById(participation.reunionId);
+                        if (reunion != null) {
+                            reunions.add(reunion);
+                            addedReunionIds.add(participation.reunionId);
+                        }
+                    }
+                }
+            }
 
             allItems.clear();
             for (Reunion reunion : reunions) {
@@ -120,7 +153,8 @@ public class ReunionActivity extends AppCompatActivity {
             }
 
             runOnUiThread(() -> {
-                adapter.updateItems(allItems);
+                adapter = new ReunionAdapter(allItems, userId, userType, this);
+                recyclerView.setAdapter(adapter);
                 updateEmptyState();
             });
         }).start();

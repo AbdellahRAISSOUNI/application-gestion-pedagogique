@@ -126,11 +126,21 @@ public class DashboardActivity extends AppCompatActivity {
                     intent.putExtra("USER_ID", userId);
                     startActivity(intent);
                 });
+                addMenuCard(getString(R.string.menu_consulter_reunions), android.R.drawable.ic_menu_agenda, v -> {
+                    Intent intent = new Intent(DashboardActivity.this, ReunionActivity.class);
+                    intent.putExtra("USER_ID", userId);
+                    startActivity(intent);
+                });
                 break;
 
             case "PROFESSEUR_VACATAIRE":
                 addMenuCard(getString(R.string.menu_consulter_emploi), android.R.drawable.ic_menu_today, v -> {
                     Intent intent = new Intent(DashboardActivity.this, EmploiTempsActivity.class);
+                    intent.putExtra("USER_ID", userId);
+                    startActivity(intent);
+                });
+                addMenuCard(getString(R.string.menu_consulter_reunions), android.R.drawable.ic_menu_agenda, v -> {
+                    Intent intent = new Intent(DashboardActivity.this, ReunionActivity.class);
                     intent.putExtra("USER_ID", userId);
                     startActivity(intent);
                 });

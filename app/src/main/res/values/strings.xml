@@ -33,6 +33,7 @@
     <string name="menu_traiter_formation">Traiter formation</string>
     <string name="menu_elaborer_emploi">Élaborer emploi du temps</string>
     <string name="menu_consulter_emploi">Consulter emploi du temps</string>
+    <string name="menu_consulter_reunions">Mes réunions</string>
     <string name="logout">Déconnexion</string>
     <string name="emploi_temps_title">Emploi du Temps</string>
     <string name="search_hint">Rechercher...</string>
