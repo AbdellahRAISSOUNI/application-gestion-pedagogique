@@ -100,7 +100,9 @@ public class DashboardActivity extends AppCompatActivity {
         switch (userType) {
             case "ADMIN":
                 addMenuCard(getString(R.string.menu_planifier_reunion), android.R.drawable.ic_menu_agenda, v -> {
-                    Toast.makeText(this, "Planifier une réunion - À venir", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DashboardActivity.this, ReunionActivity.class);
+                    intent.putExtra("USER_ID", userId);
+                    startActivity(intent);
                 });
                 addMenuCard(getString(R.string.menu_envoyer_cahier), android.R.drawable.ic_menu_myplaces, v -> {
                     Toast.makeText(this, "Envoyer cahier de charges - À venir", Toast.LENGTH_SHORT).show();

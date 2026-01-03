@@ -49,4 +49,25 @@
     <string name="save_button">Enregistrer</string>
     <string name="add_emploi_temps">Ajouter</string>
     <string name="edit_emploi_temps">Modifier</string>
+    <!-- Réunion strings -->
+    <string name="reunion_title">Réunions</string>
+    <string name="add_reunion">Planifier une réunion</string>
+    <string name="edit_reunion">Modifier la réunion</string>
+    <string name="reunion_titre_hint">Titre de la réunion</string>
+    <string name="reunion_date_heure_hint">Date et heure</string>
+    <string name="reunion_ordre_du_jour_hint">Ordre du jour</string>
+    <string name="reunion_participants_label">Participants</string>
+    <string name="reunion_statut_planifiee">Planifiée</string>
+    <string name="reunion_statut_en_cours">En cours</string>
+    <string name="reunion_statut_terminee">Terminée</string>
+    <string name="empty_reunions">Aucune réunion planifiée</string>
+    <string name="reunion_created_success">Réunion créée avec succès</string>
+    <string name="reunion_updated_success">Réunion modifiée avec succès</string>
+    <string name="reunion_titre_required">Le titre est requis</string>
+    <string name="reunion_date_required">La date et l\'heure sont requises</string>
+    <string name="reunion_ordre_du_jour_required">L\'ordre du jour est requis</string>
+    <string name="reunion_participants_required">Veuillez sélectionner au moins un participant</string>
+    <string name="date_label">Date</string>
+    <string name="heure_label_reunion">Heure</string>
+    <string name="participants_count">%1$d participant(s)</string>
 </resources>

@@ -41,6 +41,14 @@
             android:name=".EmploiTempsEditActivity"
             android:exported="false"
             android:parentActivityName=".EmploiTempsActivity" />
+        <activity
+            android:name=".ReunionActivity"
+            android:exported="false"
+            android:parentActivityName=".DashboardActivity" />
+        <activity
+            android:name=".ReunionEditActivity"
+            android:exported="false"
+            android:parentActivityName=".ReunionActivity" />
     </application>
 
 </manifest>

@@ -1,7 +1,7 @@
 # Documentation du Projet - Gestion Pédagogique ENSA
 
 **Dernière mise à jour :** 2024-12-19  
-**Version :** 1.2
+**Version :** 1.3
 
 > ⚠️ **IMPORTANT :** Cette documentation doit être mise à jour à chaque ajout de fonctionnalité, modification d'architecture, ou changement important dans le projet.
 
@@ -79,6 +79,9 @@ com.example.gestionbpedagogique/
 ├── EmploiTempsActivity.java          # Consultation emplois du temps
 ├── EmploiTempsAdapter.java           # Adapter pour RecyclerView
 ├── EmploiTempsEditActivity.java      # Création/Modification emplois du temps (Admin)
+├── ReunionActivity.java              # Liste des réunions
+├── ReunionEditActivity.java          # Création/Modification réunions (Admin)
+├── ReunionAdapter.java               # Adapter pour RecyclerView des réunions
 ├── UserSpinnerAdapter.java           # Adapter personnalisé pour spinner des utilisateurs
 ├── ModuleSpinnerAdapter.java          # Adapter personnalisé pour spinner des modules
 └── GestionPedagogiqueApp.java        # Application class
@@ -230,7 +233,7 @@ com.example.gestionbpedagogique/
 
 ## ✨ Fonctionnalités Implémentées
 
-### ✅ Complétées (5/8) - 100% fonctionnel
+### ✅ Complétées (6/8) - 100% fonctionnel
 
 #### 1. Authentification
 - **Fichiers :** `WelcomeActivity.java`, `LoginActivity.java`
@@ -283,21 +286,33 @@ com.example.gestionbpedagogique/
   - Sauvegarde en base de données
   - **TimePicker intégré :** Les champs d'heure utilisent un TimePickerDialog natif pour éviter les erreurs de format
 
-### 🚧 À Implémenter (3/8)
+#### 6. Planifier une Réunion (Admin)
+- **Fichiers :** `ReunionActivity.java`, `ReunionEditActivity.java`, `ReunionAdapter.java`
+- **Fonctionnalités :**
+  - Liste des réunions avec RecyclerView
+  - Recherche en temps réel (titre, organisateur, statut)
+  - Affichage des détails : titre, date/heure, organisateur, participants, ordre du jour
+  - Statuts avec couleurs (Planifiée, En cours, Terminée)
+  - Formulaire de création/modification :
+    - Champ titre avec validation
+    - **DatePickerDialog + TimePickerDialog** pour date et heure
+    - Champ ordre du jour (multiline)
+    - **Sélection multiple de participants** (checkboxes dynamiques)
+    - Validation complète des champs
+  - Sauvegarde en base de données (Reunion + ReunionParticipant)
+  - Modification d'une réunion existante (clic sur item)
+  - État vide géré
+  - Design Material Design 3
 
-#### 1. Planifier une Réunion (Admin)
-- Sélection des professeurs à inviter
-- Date et heure
-- Ordre du jour
-- Envoi d'invitations
+### 🚧 À Implémenter (2/8)
 
-#### 2. Envoyer Cahier de Charges
+#### 1. Envoyer Cahier de Charges
 - **Admin :** Envoyer à la présidence/ministère
 - **Professeur Assistant :** Envoyer au directeur adjoint
 - Upload de documents
 - Gestion des statuts
 
-#### 3. Traiter Formation (Admin)
+#### 2. Traiter Formation (Admin)
 - Gestion des formations initiales (cycles)
 - Gestion des formations continues (DCA, DCESS)
 - Ajout/modification de modules
@@ -320,7 +335,7 @@ com.example.gestionbpedagogique/
 **Fonctionnalités :**
 - ✅ Consulter tous les emplois du temps
 - ✅ Élaborer les emplois du temps (créer, modifier)
-- 🚧 Planifier des réunions
+- ✅ Planifier des réunions (créer, modifier, voir liste)
 - 🚧 Envoyer cahiers de charges à la présidence/ministère
 - 🚧 Traiter les formations (ajouter, modifier)
 
@@ -353,6 +368,14 @@ DashboardActivity → EmploiTempsActivity
   ├─ Admin : Voit tous les emplois
   ├─ Professeur Assistant : Voit ses emplois
   └─ Professeur Vacataire : Voit ses emplois
+```
+
+### Workflow de Planification Réunion (Admin)
+```
+DashboardActivity → ReunionActivity
+  ├─ Voir liste des réunions
+  ├─ Bouton "Planifier une réunion" → ReunionEditActivity (création)
+  └─ Clic sur item → ReunionEditActivity (modification)
 ```
 
 ### Workflow de Déconnexion
@@ -475,35 +498,24 @@ DashboardActivity → WelcomeActivity (avec clear task)
 
 ## 📊 État du Projet
 
-### Version Actuelle : 1.2
+### Version Actuelle : 1.3
 
-#### Fonctionnalités Complétées (5/8)
+#### Fonctionnalités Complétées (6/8)
 - ✅ Authentification complète
 - ✅ Page d'accueil et navigation
 - ✅ Tableau de bord avec menu adaptatif
 - ✅ Consultation des emplois du temps
 - ✅ Élaboration des emplois du temps (création/modification avec TimePicker)
+- ✅ Planifier une réunion (Admin) - Création, modification, liste avec recherche
 
 #### Fonctionnalités En Cours (0/8)
 - Aucune
 
-#### Fonctionnalités À Faire (3/8)
-- 🚧 Planifier une réunion (Admin)
+#### Fonctionnalités À Faire (2/8)
 - 🚧 Envoyer cahier de charges (Admin + Professeur Assistant)
 - 🚧 Traiter formation (Admin)
 
 ### Prochaines Étapes Suggérées
-
-**Prochaine fonctionnalité recommandée : "Planifier une Réunion" (Admin)**
-
-1. **Implémenter "Planifier une Réunion" (Admin)**
-   - Créer `ReunionActivity` et `ReunionEditActivity`
-   - Sélection multiple de professeurs (checkboxes)
-   - Date picker et TimePicker pour date/heure
-   - Champ ordre du jour (textarea)
-   - Enregistrement en base de données
-   - Affichage des réunions planifiées
-   - Gestion des participants (ReunionParticipant)
 
 2. **Implémenter "Envoyer Cahier de Charges"**
    - Upload de fichiers (Storage Access Framework)
@@ -612,6 +624,35 @@ Pour toute question ou problème :
 ---
 
 ## 📅 Changelog
+
+### Version 1.3 - 2024-12-19
+
+#### Fonctionnalités Ajoutées
+- ✅ **Planifier une Réunion (Admin)** - Fonctionnalité complète
+  - Liste des réunions avec RecyclerView
+  - Recherche en temps réel (titre, organisateur, statut)
+  - Affichage des détails : titre, date/heure, organisateur, participants, ordre du jour
+  - Statuts avec couleurs (Planifiée, En cours, Terminée)
+  - Formulaire de création/modification avec validation complète
+  - DatePickerDialog + TimePickerDialog pour sélection date/heure
+  - Sélection multiple de participants avec checkboxes dynamiques
+  - Modification d'une réunion existante (clic sur item)
+  - Sauvegarde en base de données (Reunion + ReunionParticipant)
+
+#### Fichiers Ajoutés
+- `ReunionActivity.java` - Liste des réunions
+- `ReunionEditActivity.java` - Formulaire création/modification
+- `ReunionAdapter.java` - Adapter pour RecyclerView
+- `activity_reunion.xml` - Layout liste
+- `activity_reunion_edit.xml` - Layout formulaire
+- `item_reunion.xml` - Layout item
+
+#### Modifications
+- 🔄 `DashboardActivity.java` : Navigation vers ReunionActivity pour Admin
+- 🔄 `AndroidManifest.xml` : Ajout des activités ReunionActivity et ReunionEditActivity
+- 🔄 `strings.xml` : Ajout des strings pour les réunions
+
+---
 
 ### Version 1.2 - 2024-12-19
 
