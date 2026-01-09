@@ -25,16 +25,26 @@
             android:padding="24dp"
             android:gravity="center">
 
-            <!-- Logo/Icon Area -->
-            <ImageView
-                android:id="@+id/logo_image"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+            <!-- Logo/Icon Area with Modern Background -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:layout_marginBottom="32dp"
-                android:src="@drawable/ic_launcher_foreground"
-                android:contentDescription="@string/app_name"
-                app:tint="@color/primary_blue" />
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/primary_blue_light"
+                app:strokeWidth="0dp"
+                android:padding="20dp">
+                
+                <ImageView
+                    android:id="@+id/logo_image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    android:contentDescription="@string/app_name"
+                    app:tint="@color/white" />
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Welcome Title -->
             <TextView
@@ -64,10 +74,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="@color/card_background"
-                app:strokeWidth="0dp">
+                app:strokeWidth="0dp"
+                android:padding="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,10 +111,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="@color/card_background"
-                app:strokeWidth="0dp">
+                app:strokeWidth="0dp"
+                android:padding="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -222,14 +234,18 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/get_started_button"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="64dp"
                 android:text="@string/get_started"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
+                android:letterSpacing="0.02"
                 app:backgroundTint="@color/primary_blue"
-                app:cornerRadius="12dp"
-                app:elevation="2dp"
-                android:layout_marginBottom="24dp" />
+                app:cornerRadius="16dp"
+                app:elevation="4dp"
+                app:rippleColor="@color/primary_blue_light"
+                android:layout_marginBottom="24dp"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp" />
 
             <!-- Footer Text -->
             <TextView

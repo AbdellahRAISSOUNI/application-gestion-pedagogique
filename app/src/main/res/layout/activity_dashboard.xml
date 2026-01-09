@@ -29,10 +29,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="8dp"
                 app:cardBackgroundColor="@color/card_background"
-                app:strokeWidth="0dp">
+                app:strokeWidth="0dp"
+                android:padding="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -48,12 +49,22 @@
                         android:gravity="center_vertical"
                         android:layout_marginBottom="16dp">
 
-                        <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_launcher_foreground"
-                            app:tint="@color/primary_blue"
-                            android:layout_marginEnd="16dp" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_marginEnd="16dp"
+                            app:cardCornerRadius="32dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="@color/primary_blue_light"
+                            app:strokeWidth="0dp"
+                            android:padding="12dp">
+                            
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:tint="@color/white" />
+                        </com.google.android.material.card.MaterialCardView>
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -85,24 +96,43 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/logout_button"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:text="@string/logout"
-                        android:textSize="14sp"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.02"
                         app:backgroundTint="@color/accent_orange"
-                        app:cornerRadius="8dp" />
+                        app:cornerRadius="14dp"
+                        app:elevation="2dp"
+                        app:rippleColor="@color/accent_orange_light" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Menu Title -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Menu Title with Modern Styling -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/menu_title"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginBottom="16dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="24dp">
+                
+                <View
+                    android:layout_width="4dp"
+                    android:layout_height="32dp"
+                    android:background="@color/primary_blue"
+                    android:layout_marginEnd="12dp" />
+                
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/menu_title"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:letterSpacing="0.02" />
+            </LinearLayout>
 
             <!-- Menu Container (dynamically populated) -->
             <LinearLayout

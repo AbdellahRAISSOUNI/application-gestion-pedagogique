@@ -155,51 +155,200 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void addMenuCard(String title, int iconResId, View.OnClickListener onClickListener) {
+        // Determine color scheme based on menu item
+        int iconBgColor = getIconColorForMenu(title);
+        int accentColor = getAccentColorForMenu(title);
+        
+        // Outer card with accent border effect
         MaterialCardView card = new MaterialCardView(this);
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        cardParams.setMargins(0, 0, 0, 16);
+        cardParams.setMargins(0, 0, 0, 28);
         card.setLayoutParams(cardParams);
-        card.setCardElevation(4);
-        card.setRadius(16);
+        card.setCardElevation(12);
+        card.setRadius(32);
         card.setCardBackgroundColor(ContextCompat.getColor(this, R.color.card_background));
-        card.setPadding(24, 24, 24, 24);
+        card.setStrokeWidth(2);
+        card.setStrokeColor(accentColor);
+        card.setPadding(0, 0, 0, 0);
         card.setClickable(true);
         card.setFocusable(true);
         card.setOnClickListener(onClickListener);
 
-        LinearLayout cardContent = new LinearLayout(this);
-        cardContent.setOrientation(LinearLayout.HORIZONTAL);
-        cardContent.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        // Inner container with gradient-like effect
+        LinearLayout innerContainer = new LinearLayout(this);
+        innerContainer.setOrientation(LinearLayout.VERTICAL);
+        innerContainer.setPadding(0, 0, 0, 0);
+        
+        // Accent bar at top
+        View accentBar = new View(this);
+        LinearLayout.LayoutParams accentBarParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            4
+        );
+        accentBar.setLayoutParams(accentBarParams);
+        accentBar.setBackgroundColor(accentColor);
+        
+        // Main content container
+        LinearLayout mainContainer = new LinearLayout(this);
+        mainContainer.setOrientation(LinearLayout.HORIZONTAL);
+        mainContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        mainContainer.setPadding(32, 32, 24, 32);
+        mainContainer.setBackground(null);
+
+        // Icon Container with Enhanced Design
+        MaterialCardView iconContainer = new MaterialCardView(this);
+        LinearLayout.LayoutParams iconContainerParams = new LinearLayout.LayoutParams(96, 96);
+        iconContainerParams.setMargins(0, 0, 28, 0);
+        iconContainer.setLayoutParams(iconContainerParams);
+        iconContainer.setRadius(24);
+        iconContainer.setCardElevation(8);
+        iconContainer.setCardBackgroundColor(iconBgColor);
+        iconContainer.setPadding(24, 24, 24, 24);
+        
+        // Add subtle inner shadow effect with a darker border
+        iconContainer.setStrokeWidth(0);
 
         // Icon
         ImageView iconView = new ImageView(this);
         Drawable iconDrawable = ContextCompat.getDrawable(this, iconResId);
         if (iconDrawable != null) {
-            iconDrawable.setTint(ContextCompat.getColor(this, R.color.primary_blue));
+            iconDrawable.setTint(ContextCompat.getColor(this, R.color.white));
             iconView.setImageDrawable(iconDrawable);
         }
-        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(48, 48);
-        iconParams.setMargins(0, 0, 16, 0);
+        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        );
         iconView.setLayoutParams(iconParams);
 
-        // Title
-        TextView titleView = new TextView(this);
-        titleView.setText(title);
-        titleView.setTextSize(16);
-        titleView.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-        titleView.setLayoutParams(new LinearLayout.LayoutParams(
+        iconContainer.addView(iconView);
+
+        // Text Container
+        LinearLayout textContainer = new LinearLayout(this);
+        textContainer.setOrientation(LinearLayout.VERTICAL);
+        textContainer.setLayoutParams(new LinearLayout.LayoutParams(
             0,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             1.0f
         ));
 
-        cardContent.addView(iconView);
-        cardContent.addView(titleView);
-        card.addView(cardContent);
+        // Title with enhanced styling
+        TextView titleView = new TextView(this);
+        titleView.setText(title);
+        titleView.setTextSize(19);
+        titleView.setTypeface(null, android.graphics.Typeface.BOLD);
+        titleView.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+        titleView.setLetterSpacing(0.015f);
+        titleView.setLineSpacing(6, 1.1f);
+        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        titleParams.setMargins(0, 0, 0, 4);
+        titleView.setLayoutParams(titleParams);
+
+        textContainer.addView(titleView);
+        
+        // Add subtle description/subtitle based on menu item
+        TextView subtitleView = new TextView(this);
+        String subtitle = getSubtitleForMenu(title);
+        subtitleView.setText(subtitle);
+        subtitleView.setTextSize(13);
+        subtitleView.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
+        subtitleView.setLetterSpacing(0.01f);
+        LinearLayout.LayoutParams subtitleParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        subtitleParams.setMargins(0, 2, 0, 0);
+        subtitleView.setLayoutParams(subtitleParams);
+        
+        textContainer.addView(subtitleView);
+
+        mainContainer.addView(iconContainer);
+        mainContainer.addView(textContainer);
+
+        // Arrow Icon with Enhanced Modern Style
+        MaterialCardView arrowContainer = new MaterialCardView(this);
+        LinearLayout.LayoutParams arrowContainerParams = new LinearLayout.LayoutParams(44, 44);
+        arrowContainer.setLayoutParams(arrowContainerParams);
+        arrowContainer.setRadius(22);
+        arrowContainer.setCardElevation(2);
+        arrowContainer.setCardBackgroundColor(accentColor);
+        arrowContainer.setPadding(10, 10, 10, 10);
+        
+        ImageView arrowView = new ImageView(this);
+        Drawable arrowDrawable = ContextCompat.getDrawable(this, android.R.drawable.ic_menu_more);
+        if (arrowDrawable != null) {
+            arrowDrawable.setTint(ContextCompat.getColor(this, R.color.white));
+            arrowView.setImageDrawable(arrowDrawable);
+        }
+        LinearLayout.LayoutParams arrowParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        arrowView.setLayoutParams(arrowParams);
+        arrowView.setRotation(270); // Rotate to point right
+        
+        arrowContainer.addView(arrowView);
+        mainContainer.addView(arrowContainer);
+        
+        innerContainer.addView(accentBar);
+        innerContainer.addView(mainContainer);
+        card.addView(innerContainer);
 
         menuContainer.addView(card);
+    }
+    
+    private int getIconColorForMenu(String menuTitle) {
+        // Return different colors based on menu item for visual distinction
+        if (menuTitle.contains("réunion") || menuTitle.contains("Réunion")) {
+            return ContextCompat.getColor(this, R.color.primary_blue);
+        } else if (menuTitle.contains("cahier") || menuTitle.contains("Cahier")) {
+            return ContextCompat.getColor(this, R.color.accent_orange);
+        } else if (menuTitle.contains("formation") || menuTitle.contains("Formation")) {
+            return ContextCompat.getColor(this, R.color.status_info);
+        } else if (menuTitle.contains("emploi") || menuTitle.contains("Emploi")) {
+            return ContextCompat.getColor(this, R.color.status_success);
+        } else {
+            return ContextCompat.getColor(this, R.color.primary_blue_light);
+        }
+    }
+    
+    private int getAccentColorForMenu(String menuTitle) {
+        // Return accent color for border and arrow (slightly lighter than icon)
+        if (menuTitle.contains("réunion") || menuTitle.contains("Réunion")) {
+            return ContextCompat.getColor(this, R.color.primary_blue_light);
+        } else if (menuTitle.contains("cahier") || menuTitle.contains("Cahier")) {
+            return ContextCompat.getColor(this, R.color.accent_orange_light);
+        } else if (menuTitle.contains("formation") || menuTitle.contains("Formation")) {
+            return ContextCompat.getColor(this, R.color.primary_blue_lighter);
+        } else if (menuTitle.contains("emploi") || menuTitle.contains("Emploi")) {
+            return ContextCompat.getColor(this, R.color.status_success);
+        } else {
+            return ContextCompat.getColor(this, R.color.primary_blue_light);
+        }
+    }
+    
+    private String getSubtitleForMenu(String menuTitle) {
+        // Return descriptive subtitle for each menu item
+        if (menuTitle.contains("réunion") || menuTitle.contains("Réunion")) {
+            return "Planifier et gérer les réunions pédagogiques";
+        } else if (menuTitle.contains("cahier") || menuTitle.contains("Cahier")) {
+            return "Envoyer et suivre les cahiers de charges";
+        } else if (menuTitle.contains("formation") || menuTitle.contains("Formation")) {
+            return "Gérer les formations et modules";
+        } else if (menuTitle.contains("emploi") || menuTitle.contains("Emploi")) {
+            if (menuTitle.contains("Élaborer") || menuTitle.contains("élaborer")) {
+                return "Créer et modifier les emplois du temps";
+            } else {
+                return "Consulter votre emploi du temps";
+            }
+        } else {
+            return "Accéder à cette fonctionnalité";
+        }
     }
 }

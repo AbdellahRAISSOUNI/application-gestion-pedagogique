@@ -25,15 +25,25 @@
             android:padding="24dp"
             android:gravity="center">
 
-            <!-- Welcome Icon -->
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+            <!-- Welcome Icon with Modern Background -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:layout_marginBottom="32dp"
-                android:src="@drawable/ic_launcher_foreground"
-                android:contentDescription="@string/app_name"
-                app:tint="@color/primary_blue" />
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/primary_blue_light"
+                app:strokeWidth="0dp"
+                android:padding="20dp">
+                
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    android:contentDescription="@string/app_name"
+                    app:tint="@color/white" />
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Welcome Text -->
             <TextView
@@ -53,10 +63,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="8dp"
                 app:cardBackgroundColor="@color/card_background"
-                app:strokeWidth="0dp">
+                app:strokeWidth="0dp"
+                android:padding="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -158,11 +169,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/primary_blue_light"
                 app:strokeWidth="0dp"
-                android:alpha="0.1">
+                android:alpha="0.15"
+                android:padding="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
