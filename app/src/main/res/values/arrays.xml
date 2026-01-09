@@ -19,4 +19,26 @@
         <item>Formation Initiale</item>
         <item>Formation Continue</item>
     </array>
+    
+    <array name="formation_types">
+        <item>INITIALE</item>
+        <item>CONTINUE</item>
+    </array>
+    
+    <array name="formation_cycles_initiale">
+        <item>PREPARATOIRE</item>
+        <item>INGENIEUR</item>
+        <item>MASTER</item>
+    </array>
+    
+    <array name="formation_cycles_continue">
+        <item>DCA</item>
+        <item>DCESS</item>
+    </array>
+    
+    <array name="formation_status">
+        <item>EN_ATTENTE</item>
+        <item>APPROUVEE</item>
+        <item>REFUSEE</item>
+    </array>
 </resources>

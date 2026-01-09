@@ -57,6 +57,14 @@
             android:name=".CahierChargesEditActivity"
             android:exported="false"
             android:parentActivityName=".CahierChargesActivity" />
+        <activity
+            android:name=".FormationActivity"
+            android:exported="false"
+            android:parentActivityName=".DashboardActivity" />
+        <activity
+            android:name=".FormationEditActivity"
+            android:exported="false"
+            android:parentActivityName=".FormationActivity" />
     </application>
 
 </manifest>

@@ -110,7 +110,9 @@ public class DashboardActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
                 addMenuCard(getString(R.string.menu_traiter_formation), android.R.drawable.ic_menu_recent_history, v -> {
-                    Toast.makeText(this, "Traiter formation - À venir", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DashboardActivity.this, FormationActivity.class);
+                    intent.putExtra("USER_ID", userId);
+                    startActivity(intent);
                 });
                 addMenuCard(getString(R.string.menu_elaborer_emploi), android.R.drawable.ic_menu_today, v -> {
                     Intent intent = new Intent(DashboardActivity.this, EmploiTempsActivity.class);
