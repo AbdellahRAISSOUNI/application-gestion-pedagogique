@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.gestionbpedagogique.database.AppDatabase;
 import com.example.gestionbpedagogique.database.dao.CahierChargesDao;
@@ -38,6 +39,7 @@ public class CahierChargesActivity extends AppCompatActivity {
     private EditText searchEditText;
     private TextView emptyStateText;
     private FloatingActionButton addButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private long userId;
     private String userType;
     private List<CahierChargesItem> allItems = new ArrayList<>();
@@ -72,10 +74,21 @@ public class CahierChargesActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.search_edit_text);
         emptyStateText = findViewById(R.id.empty_state_text);
         addButton = findViewById(R.id.add_button);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CahierChargesAdapter(new ArrayList<>(), userId, userType, this);
         recyclerView.setAdapter(adapter);
+        
+        // Setup pull-to-refresh
+        swipeRefreshLayout.setColorSchemeColors(
+            getResources().getColor(R.color.primary_blue, null),
+            getResources().getColor(R.color.accent_orange, null),
+            getResources().getColor(R.color.status_success, null)
+        );
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            loadUserTypeAndCahiers();
+        });
         
         addButton.setOnClickListener(v -> {
             Intent intent = new Intent(CahierChargesActivity.this, CahierChargesEditActivity.class);
@@ -138,6 +151,11 @@ public class CahierChargesActivity extends AppCompatActivity {
                     addButton.setVisibility(View.VISIBLE);
                 } else if (addButton != null) {
                     addButton.setVisibility(View.GONE);
+                }
+                
+                // Stop refresh animation
+                if (swipeRefreshLayout != null) {
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             });
         }).start();

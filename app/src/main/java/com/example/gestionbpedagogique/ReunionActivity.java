@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.gestionbpedagogique.database.AppDatabase;
 import com.example.gestionbpedagogique.database.dao.ReunionDao;
@@ -37,6 +38,7 @@ public class ReunionActivity extends AppCompatActivity {
     private EditText searchEditText;
     private TextView emptyStateText;
     private com.google.android.material.button.MaterialButton addButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private long userId;
     private String userType;
     private List<ReunionItem> allItems = new ArrayList<>();
@@ -72,10 +74,21 @@ public class ReunionActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.search_edit_text);
         emptyStateText = findViewById(R.id.empty_state_text);
         addButton = findViewById(R.id.add_button);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ReunionAdapter(new ArrayList<>(), userId, userType, this);
         recyclerView.setAdapter(adapter);
+        
+        // Setup pull-to-refresh
+        swipeRefreshLayout.setColorSchemeColors(
+            getResources().getColor(R.color.primary_blue, null),
+            getResources().getColor(R.color.accent_orange, null),
+            getResources().getColor(R.color.status_success, null)
+        );
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            loadUserTypeAndReunions();
+        });
     }
     
     private void setupAddButton() {
@@ -159,6 +172,10 @@ public class ReunionActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
                 setupAddButton(); // Setup button after userType is loaded
                 updateEmptyState();
+                // Stop refresh animation
+                if (swipeRefreshLayout != null) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             });
         }).start();
     }

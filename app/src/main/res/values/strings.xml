@@ -144,4 +144,11 @@
     <string name="module_updated_success">Module modifié avec succès</string>
     <string name="module_deleted_success">Module supprimé avec succès</string>
     <string name="delete_module">Supprimer</string>
+    <!-- Statistics strings -->
+    <string name="statistics_title">Statistiques</string>
+    <string name="stat_total_formations">Formations</string>
+    <string name="stat_pending_cahiers">Cahiers en attente</string>
+    <string name="stat_upcoming_reunions">Réunions à venir</string>
+    <string name="stat_total_modules">Modules</string>
+    <string name="stat_my_schedule">Mes créneaux</string>
 </resources>

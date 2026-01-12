@@ -109,6 +109,47 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Statistics Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <!-- Statistics Title -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+                    
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="28dp"
+                        android:background="@color/status_info"
+                        android:layout_marginEnd="12dp" />
+                    
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/statistics_title"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:letterSpacing="0.02" />
+                </LinearLayout>
+
+                <!-- Statistics Container (dynamically populated) -->
+                <LinearLayout
+                    android:id="@+id/statistics_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+
             <!-- Menu Title with Modern Styling -->
             <LinearLayout
                 android:layout_width="match_parent"
