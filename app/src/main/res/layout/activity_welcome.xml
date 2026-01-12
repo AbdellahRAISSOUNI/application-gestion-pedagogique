@@ -5,14 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="@color/white"
     tools:context=".WelcomeActivity">
 
-    <!-- ScrollView for smaller screens -->
-    <androidx.core.widget.NestedScrollView
+    <!-- Main Content - No ScrollView needed -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,18 +19,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="24dp"
-            android:gravity="center">
+            android:gravity="center_horizontal">
 
-            <!-- ENSA Logo -->
+            <!-- ENSA Logo - Compact -->
             <ImageView
                 android:id="@+id/logo_image"
-                android:layout_width="250dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="20dp"
                 android:src="@drawable/ensa_logo"
                 android:contentDescription="@string/app_name"
                 android:adjustViewBounds="true"
@@ -43,222 +42,173 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome_title"
-                android:textSize="36sp"
-                android:textStyle="bold"
+                android:textSize="28sp"
+                android:textStyle="normal"
                 android:textColor="@color/text_primary"
-                android:fontFamily="sans-serif-medium" />
+                android:fontFamily="sans-serif-light"
+                android:letterSpacing="0.03"
+                android:layout_marginBottom="4dp" />
 
             <!-- Subtitle -->
             <TextView
                 android:id="@+id/welcome_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
                 android:text="@string/welcome_subtitle"
-                android:textSize="20sp"
-                android:textColor="@color/text_secondary" />
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="sans-serif"
+                android:letterSpacing="0.01"
+                android:layout_marginBottom="24dp" />
 
-            <!-- App Description Card -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Divider Line -->
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Features List - Compact Grid -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:orientation="vertical"
                 android:layout_marginBottom="24dp"
-                app:cardCornerRadius="28dp"
-                app:cardElevation="12dp"
-                app:cardBackgroundColor="@color/card_background"
-                app:strokeWidth="0dp"
-                android:padding="0dp">
-                
-                <!-- Top Accent Bar -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/primary_blue" />
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
 
+                <!-- Feature 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="16dp"
+                        android:background="@color/primary_blue"
+                        android:layout_marginEnd="12dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/app_description_title"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:text="@string/feature_formation"
+                        android:textSize="14sp"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="16dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/app_description"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_secondary"
-                        android:lineSpacingMultiplier="1.3" />
-
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="0.01" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Features List -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                app:cardCornerRadius="28dp"
-                app:cardElevation="12dp"
-                app:cardBackgroundColor="@color/card_background"
-                app:strokeWidth="0dp"
-                android:padding="0dp">
-                
-                <!-- Top Accent Bar -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/status_success" />
-
+                <!-- Feature 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="16dp"
+                        android:background="@color/primary_blue"
+                        android:layout_marginEnd="12dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/features_title"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:text="@string/feature_cahier"
+                        android:textSize="14sp"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Feature 1 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_agenda"
-                            app:tint="@color/primary_blue"
-                            android:layout_marginEnd="12dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/feature_formation"
-                            android:textSize="15sp"
-                            android:textColor="@color/text_secondary" />
-                    </LinearLayout>
-
-                    <!-- Feature 2 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_myplaces"
-                            app:tint="@color/primary_blue"
-                            android:layout_marginEnd="12dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/feature_cahier"
-                            android:textSize="15sp"
-                            android:textColor="@color/text_secondary" />
-                    </LinearLayout>
-
-                    <!-- Feature 3 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_today"
-                            app:tint="@color/primary_blue"
-                            android:layout_marginEnd="12dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/feature_emploi"
-                            android:textSize="15sp"
-                            android:textColor="@color/text_secondary" />
-                    </LinearLayout>
-
-                    <!-- Feature 4 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_recent_history"
-                            app:tint="@color/primary_blue"
-                            android:layout_marginEnd="12dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/feature_reunion"
-                            android:textSize="15sp"
-                            android:textColor="@color/text_secondary" />
-                    </LinearLayout>
-
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="0.01" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+                <!-- Feature 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="16dp"
+                        android:background="@color/primary_blue"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/feature_emploi"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="0.01" />
+                </LinearLayout>
+
+                <!-- Feature 4 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="16dp"
+                        android:background="@color/primary_blue"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/feature_reunion"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="0.01" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <!-- Get Started Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/get_started_button"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="52dp"
                 android:text="@string/get_started"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.02"
+                android:textSize="15sp"
+                android:textStyle="normal"
+                android:letterSpacing="0.05"
+                android:fontFamily="sans-serif-medium"
                 app:backgroundTint="@color/primary_blue"
-                app:cornerRadius="16dp"
-                app:elevation="4dp"
+                app:cornerRadius="12dp"
+                app:elevation="0dp"
                 app:rippleColor="@color/primary_blue_light"
-                android:layout_marginBottom="24dp"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp" />
+                android:layout_marginBottom="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp" />
 
             <!-- Footer Text -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/footer_text"
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary" />
+                android:textSize="10sp"
+                android:textColor="@color/text_tertiary"
+                android:fontFamily="sans-serif"
+                android:letterSpacing="0.02" />
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
