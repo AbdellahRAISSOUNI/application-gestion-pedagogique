@@ -41,6 +41,7 @@ public class ReunionEditActivity extends AppCompatActivity {
     private TextInputLayout dateHeureLayout;
     private TextInputLayout ordreDuJourLayout;
     private MaterialButton saveButton;
+    private MaterialButton deleteButton;
     private TextView titleText;
     private LinearLayout participantsContainer;
     
@@ -69,12 +70,15 @@ public class ReunionEditActivity extends AppCompatActivity {
         loadData();
         setupDatePicker();
         setupSaveButton();
+        setupDeleteButton();
         
         // Set title based on mode
         if (reunionId == -1) {
             titleText.setText(getString(R.string.add_reunion));
+            deleteButton.setVisibility(View.GONE);
         } else {
             titleText.setText(getString(R.string.edit_reunion));
+            deleteButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -87,6 +91,7 @@ public class ReunionEditActivity extends AppCompatActivity {
         dateHeureLayout = findViewById(R.id.date_heure_layout);
         ordreDuJourLayout = findViewById(R.id.ordre_du_jour_layout);
         saveButton = findViewById(R.id.save_button);
+        deleteButton = findViewById(R.id.delete_button);
         participantsContainer = findViewById(R.id.participants_container);
         
         // Make date/heure input clickable but not editable
@@ -174,7 +179,9 @@ public class ReunionEditActivity extends AppCompatActivity {
             checkBox.setText(professeur.fullName);
             checkBox.setTag(professeur.id);
             checkBox.setTextSize(16);
-            checkBox.setPadding(8, 8, 8, 8);
+            checkBox.setTextColor(getResources().getColor(R.color.text_primary, null));
+            checkBox.setButtonTintList(getResources().getColorStateList(R.color.checkbox_dark, null));
+            checkBox.setPadding(12, 12, 12, 12);
             participantCheckboxes.add(checkBox);
             participantsContainer.addView(checkBox);
         }
@@ -214,6 +221,39 @@ public class ReunionEditActivity extends AppCompatActivity {
 
     private void setupSaveButton() {
         saveButton.setOnClickListener(v -> saveReunion());
+    }
+    
+    private void setupDeleteButton() {
+        deleteButton.setOnClickListener(v -> deleteReunion());
+    }
+    
+    private void deleteReunion() {
+        new android.app.AlertDialog.Builder(this)
+            .setTitle(getString(R.string.delete_reunion))
+            .setMessage(getString(R.string.delete_confirm))
+            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                new Thread(() -> {
+                    AppDatabase db = AppDatabase.getDatabase(this);
+                    ReunionDao reunionDao = db.reunionDao();
+                    ReunionParticipantDao participantDao = db.reunionParticipantDao();
+                    
+                    // Delete participants first (cascade should handle this, but being explicit)
+                    participantDao.deleteParticipantsByReunion(reunionId);
+                    
+                    // Delete reunion
+                    Reunion reunion = reunionDao.getReunionById(reunionId);
+                    if (reunion != null) {
+                        reunionDao.deleteReunion(reunion);
+                    }
+                    
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, getString(R.string.reunion_deleted_success), Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+                }).start();
+            })
+            .setNegativeButton(android.R.string.no, null)
+            .show();
     }
 
     private void saveReunion() {

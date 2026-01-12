@@ -65,6 +65,9 @@
     <string name="empty_reunions">Aucune réunion planifiée</string>
     <string name="reunion_created_success">Réunion créée avec succès</string>
     <string name="reunion_updated_success">Réunion modifiée avec succès</string>
+    <string name="reunion_deleted_success">Réunion supprimée avec succès</string>
+    <string name="delete_reunion">Supprimer</string>
+    <string name="delete_confirm">Êtes-vous sûr de vouloir supprimer cet élément ?</string>
     <string name="reunion_titre_required">Le titre est requis</string>
     <string name="reunion_date_required">La date et l\'heure sont requises</string>
     <string name="reunion_ordre_du_jour_required">L\'ordre du jour est requis</string>
