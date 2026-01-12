@@ -1,0 +1,56 @@
+==========================================
+ENSA TÉTOUAN - GESTION PÉDAGOGIQUE
+LISTE DES COMPTES UTILISATEURS
+==========================================
+
+Date de génération: 2026
+
+==========================================
+COMPTE ADMINISTRATEUR
+==========================================
+Nom d'utilisateur: admin
+Mot de passe: admin123
+Type: Directeur Adjoint (ADMIN)
+Email: admin@ensa.ma
+Téléphone: +212 6XX XXX XXX
+
+==========================================
+COMPTES PROFESSEURS ASSISTANTS
+==========================================
+
+Compte 1:
+Nom d'utilisateur: prof.assistant1
+Mot de passe: prof123
+Type: Professeur Assistant (PROFESSEUR_ASSISTANT)
+Email: prof1@ensa.ma
+Téléphone: +212 6XX XXX XXX
+
+Compte 2:
+Nom d'utilisateur: prof.assistant2
+Mot de passe: prof123
+Type: Professeur Assistant (PROFESSEUR_ASSISTANT)
+Email: prof2@ensa.ma
+Téléphone: +212 6XX XXX XXX
+
+==========================================
+COMPTE PROFESSEUR VACATAIRE
+==========================================
+Nom d'utilisateur: prof.vacataire
+Mot de passe: prof123
+Type: Professeur Vacataire (PROFESSEUR_VACATAIRE)
+Email: vacataire@ensa.ma
+Téléphone: +212 6XX XXX XXX
+
+==========================================
+RÉSUMÉ RAPIDE
+==========================================
+
+ADMIN:
+  - admin / admin123
+
+PROFESSEURS:
+  - prof.assistant1 / prof123
+  - prof.assistant2 / prof123
+  - prof.vacataire / prof123
+
+==========================================
