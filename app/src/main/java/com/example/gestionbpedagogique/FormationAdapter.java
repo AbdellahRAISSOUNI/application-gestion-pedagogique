@@ -61,6 +61,7 @@ public class FormationAdapter extends RecyclerView.Adapter<FormationAdapter.View
         private TextView createdByText;
         private TextView createdDateText;
         private TextView validatedDateText;
+        private com.google.android.material.card.MaterialCardView statusBadgeCard;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -71,6 +72,14 @@ public class FormationAdapter extends RecyclerView.Adapter<FormationAdapter.View
             createdByText = itemView.findViewById(R.id.created_by_text);
             createdDateText = itemView.findViewById(R.id.created_date_text);
             validatedDateText = itemView.findViewById(R.id.validated_date_text);
+            // Find the parent MaterialCardView of statusText
+            View parent = (View) statusText.getParent();
+            while (parent != null && !(parent instanceof com.google.android.material.card.MaterialCardView)) {
+                parent = (View) parent.getParent();
+            }
+            if (parent instanceof com.google.android.material.card.MaterialCardView) {
+                statusBadgeCard = (com.google.android.material.card.MaterialCardView) parent;
+            }
         }
 
         void bind(FormationActivity.FormationItem item, String userType, FormationActivity activity) {
@@ -88,21 +97,45 @@ public class FormationAdapter extends RecyclerView.Adapter<FormationAdapter.View
             String statusTextStr = translateStatus(item.status);
             statusText.setText(statusTextStr);
             
-            int statusColor;
+            // Update accent bar color based on status
+            View accentBar = itemView.findViewById(R.id.accent_bar);
+            if (accentBar != null) {
+                int accentColor;
+                switch (item.status) {
+                    case "EN_ATTENTE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.status_warning);
+                        break;
+                    case "APPROUVEE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.status_success);
+                        break;
+                    case "REFUSEE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.status_error);
+                        break;
+                    default:
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.status_info);
+                }
+                accentBar.setBackgroundColor(accentColor);
+            }
+            
+            // Update status badge background color
+            int statusBgColor;
             switch (item.status) {
                 case "EN_ATTENTE":
-                    statusColor = ContextCompat.getColor(itemView.getContext(), R.color.text_secondary);
+                    statusBgColor = ContextCompat.getColor(itemView.getContext(), R.color.status_warning);
                     break;
                 case "APPROUVEE":
-                    statusColor = ContextCompat.getColor(itemView.getContext(), android.R.color.holo_green_dark);
+                    statusBgColor = ContextCompat.getColor(itemView.getContext(), R.color.status_success);
                     break;
                 case "REFUSEE":
-                    statusColor = ContextCompat.getColor(itemView.getContext(), android.R.color.holo_red_dark);
+                    statusBgColor = ContextCompat.getColor(itemView.getContext(), R.color.status_error);
                     break;
                 default:
-                    statusColor = ContextCompat.getColor(itemView.getContext(), R.color.text_primary);
+                    statusBgColor = ContextCompat.getColor(itemView.getContext(), R.color.status_info);
             }
-            statusText.setTextColor(statusColor);
+            if (statusBadgeCard != null) {
+                statusBadgeCard.setCardBackgroundColor(statusBgColor);
+            }
+            statusText.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
             
             // Created by
             createdByText.setText(item.createdByName);

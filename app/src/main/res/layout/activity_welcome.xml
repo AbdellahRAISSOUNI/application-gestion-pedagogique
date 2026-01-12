@@ -74,11 +74,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="24dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="6dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="12dp"
                 app:cardBackgroundColor="@color/card_background"
                 app:strokeWidth="0dp"
-                android:padding="4dp">
+                android:padding="0dp">
+                
+                <!-- Top Accent Bar -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/primary_blue" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -111,11 +117,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="6dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="12dp"
                 app:cardBackgroundColor="@color/card_background"
                 app:strokeWidth="0dp"
-                android:padding="4dp">
+                android:padding="0dp">
+                
+                <!-- Top Accent Bar -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/status_success" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

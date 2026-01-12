@@ -35,8 +35,11 @@ public class EmploiTempsActivity extends AppCompatActivity {
     private EmploiTempsAdapter adapter;
     private EditText searchEditText;
     private TextView emptyStateText;
+    private View emptyStateContainer;
     private com.google.android.material.button.MaterialButton addButton;
+    private com.google.android.material.button.MaterialButton emptyStateActionButton;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private android.widget.ProgressBar loadingProgress;
     private long userId;
     private String userType;
     private List<EmploiTempsItem> allItems = new ArrayList<>();
@@ -74,8 +77,11 @@ public class EmploiTempsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         searchEditText = findViewById(R.id.search_edit_text);
         emptyStateText = findViewById(R.id.empty_state_text);
+        emptyStateContainer = findViewById(R.id.empty_state_container);
         addButton = findViewById(R.id.add_button);
+        emptyStateActionButton = findViewById(R.id.empty_state_action_button);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        loadingProgress = findViewById(R.id.loading_progress);
         
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new EmploiTempsAdapter(new ArrayList<>(), null, userId, this);
@@ -89,6 +95,13 @@ public class EmploiTempsActivity extends AppCompatActivity {
         );
         swipeRefreshLayout.setOnRefreshListener(() -> {
             loadEmploiTemps();
+        });
+        
+        // Setup empty state action button
+        emptyStateActionButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EmploiTempsActivity.this, EmploiTempsEditActivity.class);
+            intent.putExtra("USER_ID", userId);
+            startActivity(intent);
         });
     }
     
@@ -104,6 +117,11 @@ public class EmploiTempsActivity extends AppCompatActivity {
     }
 
     private void loadEmploiTemps() {
+        // Show loading indicator (only if not refreshing, as swipe refresh has its own indicator)
+        if (!swipeRefreshLayout.isRefreshing() && loadingProgress != null) {
+            loadingProgress.setVisibility(View.VISIBLE);
+        }
+        
         new Thread(() -> {
             AppDatabase db = AppDatabase.getDatabase(this);
             EmploiTempsDao emploiTempsDao = db.emploiTempsDao();
@@ -145,6 +163,11 @@ public class EmploiTempsActivity extends AppCompatActivity {
             }
 
             runOnUiThread(() -> {
+                // Hide loading indicator
+                if (loadingProgress != null) {
+                    loadingProgress.setVisibility(View.GONE);
+                }
+                
                 // Update adapter with user type after loading
                 adapter = new EmploiTempsAdapter(allItems, userType, userId, this);
                 recyclerView.setAdapter(adapter);
@@ -198,10 +221,16 @@ public class EmploiTempsActivity extends AppCompatActivity {
 
     private void updateEmptyState() {
         if (adapter.getItemCount() == 0) {
-            emptyStateText.setVisibility(View.VISIBLE);
+            emptyStateContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
+            // Show action button only for Admin
+            if ("ADMIN".equals(userType)) {
+                emptyStateActionButton.setVisibility(View.VISIBLE);
+            } else {
+                emptyStateActionButton.setVisibility(View.GONE);
+            }
         } else {
-            emptyStateText.setVisibility(View.GONE);
+            emptyStateContainer.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
     }

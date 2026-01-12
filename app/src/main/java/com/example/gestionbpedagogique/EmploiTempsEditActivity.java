@@ -341,10 +341,11 @@ public class EmploiTempsEditActivity extends AppCompatActivity {
             }
             
             runOnUiThread(() -> {
-                Toast.makeText(this, 
-                    emploiTempsId == -1 ? "Emploi du temps créé avec succès" : "Emploi du temps modifié avec succès",
-                    Toast.LENGTH_SHORT).show();
-                finish();
+                View rootView = findViewById(android.R.id.content);
+                FeedbackUtils.showSuccessSnackbar(rootView, 
+                    emploiTempsId == -1 ? "Emploi du temps créé avec succès" : "Emploi du temps modifié avec succès");
+                // Delay finish to show animation
+                rootView.postDelayed(() -> finish(), 500);
             });
         }).start();
     }

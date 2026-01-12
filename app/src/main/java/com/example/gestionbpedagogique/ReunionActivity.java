@@ -37,7 +37,9 @@ public class ReunionActivity extends AppCompatActivity {
     private ReunionAdapter adapter;
     private EditText searchEditText;
     private TextView emptyStateText;
+    private View emptyStateContainer;
     private com.google.android.material.button.MaterialButton addButton;
+    private com.google.android.material.button.MaterialButton emptyStateActionButton;
     private SwipeRefreshLayout swipeRefreshLayout;
     private long userId;
     private String userType;
@@ -73,7 +75,9 @@ public class ReunionActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         searchEditText = findViewById(R.id.search_edit_text);
         emptyStateText = findViewById(R.id.empty_state_text);
+        emptyStateContainer = findViewById(R.id.empty_state_container);
         addButton = findViewById(R.id.add_button);
+        emptyStateActionButton = findViewById(R.id.empty_state_action_button);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -88,6 +92,13 @@ public class ReunionActivity extends AppCompatActivity {
         );
         swipeRefreshLayout.setOnRefreshListener(() -> {
             loadUserTypeAndReunions();
+        });
+        
+        // Setup empty state action button
+        emptyStateActionButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ReunionActivity.this, ReunionEditActivity.class);
+            intent.putExtra("USER_ID", userId);
+            startActivity(intent);
         });
     }
     
@@ -217,10 +228,16 @@ public class ReunionActivity extends AppCompatActivity {
 
     private void updateEmptyState() {
         if (adapter.getItemCount() == 0) {
-            emptyStateText.setVisibility(View.VISIBLE);
+            emptyStateContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
+            // Show action button only for Admin
+            if ("ADMIN".equals(userType)) {
+                emptyStateActionButton.setVisibility(View.VISIBLE);
+            } else {
+                emptyStateActionButton.setVisibility(View.GONE);
+            }
         } else {
-            emptyStateText.setVisibility(View.GONE);
+            emptyStateContainer.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
     }

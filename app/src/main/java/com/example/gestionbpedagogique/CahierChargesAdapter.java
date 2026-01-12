@@ -61,6 +61,7 @@ public class CahierChargesAdapter extends RecyclerView.Adapter<CahierChargesAdap
         private TextView statutText;
         private TextView dateCreationText;
         private TextView dateValidationText;
+        private com.google.android.material.card.MaterialCardView statutBadgeCard;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -71,6 +72,14 @@ public class CahierChargesAdapter extends RecyclerView.Adapter<CahierChargesAdap
             statutText = itemView.findViewById(R.id.statut_text);
             dateCreationText = itemView.findViewById(R.id.date_creation_text);
             dateValidationText = itemView.findViewById(R.id.date_validation_text);
+            // Find the parent MaterialCardView of statutText
+            View parent = (View) statutText.getParent();
+            while (parent != null && !(parent instanceof com.google.android.material.card.MaterialCardView)) {
+                parent = (View) parent.getParent();
+            }
+            if (parent instanceof com.google.android.material.card.MaterialCardView) {
+                statutBadgeCard = (com.google.android.material.card.MaterialCardView) parent;
+            }
         }
 
         void bind(CahierChargesActivity.CahierChargesItem item, String userType, CahierChargesActivity activity) {
@@ -95,24 +104,51 @@ public class CahierChargesAdapter extends RecyclerView.Adapter<CahierChargesAdap
             String statutTextStr = translateStatut(item.statut);
             statutText.setText(statutTextStr);
             
-            int statutColor;
+            // Update accent bar color based on status
+            View accentBar = itemView.findViewById(R.id.accent_bar);
+            if (accentBar != null) {
+                int accentColor;
+                switch (item.statut) {
+                    case "BROUILLON":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.text_secondary);
+                        break;
+                    case "ENVOYE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
+                        break;
+                    case "APPROUVE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.status_success);
+                        break;
+                    case "REFUSE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.status_error);
+                        break;
+                    default:
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.accent_orange);
+                }
+                accentBar.setBackgroundColor(accentColor);
+            }
+            
+            // Update status badge background color
+            int statutBgColor;
             switch (item.statut) {
                 case "BROUILLON":
-                    statutColor = ContextCompat.getColor(itemView.getContext(), R.color.text_secondary);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.text_secondary);
                     break;
                 case "ENVOYE":
-                    statutColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
                     break;
                 case "APPROUVE":
-                    statutColor = ContextCompat.getColor(itemView.getContext(), android.R.color.holo_green_dark);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.status_success);
                     break;
                 case "REFUSE":
-                    statutColor = ContextCompat.getColor(itemView.getContext(), android.R.color.holo_red_dark);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.status_error);
                     break;
                 default:
-                    statutColor = ContextCompat.getColor(itemView.getContext(), R.color.text_primary);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.accent_orange);
             }
-            statutText.setTextColor(statutColor);
+            if (statutBadgeCard != null) {
+                statutBadgeCard.setCardBackgroundColor(statutBgColor);
+            }
+            statutText.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
             
             // Date de création
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);

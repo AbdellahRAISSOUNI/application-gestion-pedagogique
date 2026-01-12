@@ -60,6 +60,7 @@ public class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHold
         private TextView statutText;
         private TextView participantsText;
         private TextView ordreDuJourText;
+        private com.google.android.material.card.MaterialCardView statutBadgeCard;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +70,14 @@ public class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHold
             statutText = itemView.findViewById(R.id.statut_text);
             participantsText = itemView.findViewById(R.id.participants_text);
             ordreDuJourText = itemView.findViewById(R.id.ordre_du_jour_text);
+            // Find the parent MaterialCardView of statutText
+            View parent = (View) statutText.getParent();
+            while (parent != null && !(parent instanceof com.google.android.material.card.MaterialCardView)) {
+                parent = (View) parent.getParent();
+            }
+            if (parent instanceof com.google.android.material.card.MaterialCardView) {
+                statutBadgeCard = (com.google.android.material.card.MaterialCardView) parent;
+            }
         }
 
         void bind(ReunionActivity.ReunionItem item, String userType, ReunionActivity activity) {
@@ -85,21 +94,45 @@ public class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHold
             String statutTextStr = translateStatut(item.statut);
             statutText.setText(statutTextStr);
             
-            int statutColor;
+            // Update accent bar color based on status
+            View accentBar = itemView.findViewById(R.id.accent_bar);
+            if (accentBar != null) {
+                int accentColor;
+                switch (item.statut) {
+                    case "PLANIFIEE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
+                        break;
+                    case "EN_COURS":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.accent_orange);
+                        break;
+                    case "TERMINEE":
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.status_success);
+                        break;
+                    default:
+                        accentColor = ContextCompat.getColor(itemView.getContext(), R.color.text_secondary);
+                }
+                accentBar.setBackgroundColor(accentColor);
+            }
+            
+            // Update status badge background color
+            int statutBgColor;
             switch (item.statut) {
                 case "PLANIFIEE":
-                    statutColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
                     break;
                 case "EN_COURS":
-                    statutColor = ContextCompat.getColor(itemView.getContext(), R.color.accent_orange);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.accent_orange);
                     break;
                 case "TERMINEE":
-                    statutColor = ContextCompat.getColor(itemView.getContext(), R.color.text_secondary);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.status_success);
                     break;
                 default:
-                    statutColor = ContextCompat.getColor(itemView.getContext(), R.color.text_primary);
+                    statutBgColor = ContextCompat.getColor(itemView.getContext(), R.color.text_secondary);
             }
-            statutText.setTextColor(statutColor);
+            if (statutBadgeCard != null) {
+                statutBadgeCard.setCardBackgroundColor(statutBgColor);
+            }
+            statutText.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
             
             // Participants
             if (item.participantNames != null && !item.participantNames.isEmpty()) {
