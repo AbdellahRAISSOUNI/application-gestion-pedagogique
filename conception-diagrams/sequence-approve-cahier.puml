@@ -1,0 +1,49 @@
+@startuml Sequence_ApproveCahier
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+
+title Approbation d'un Cahier de Charges (Admin)
+
+actor Admin
+participant "DashboardActivity" as Dashboard
+participant "CahierChargesActivity" as CahierList
+participant "CahierChargesAdapter" as Adapter
+participant "AppDatabase" as DB
+participant "CahierChargesDao" as CahierDao
+
+Admin -> Dashboard: Cliquer sur "Envoyer cahier de charges"
+Dashboard -> CahierList: Naviguer avec USER_ID
+activate CahierList
+
+CahierList -> DB: getDatabase()
+activate DB
+CahierList -> CahierDao: getAllCahierCharges()
+CahierDao --> CahierList: List<CahierCharges>
+deactivate DB
+
+CahierList -> Admin: Afficher tous les cahiers
+Admin -> CahierList: Voir cahier avec statut "ENVOYE"
+CahierList -> Adapter: Afficher boutons "Approuver" / "Refuser"
+activate Adapter
+
+Admin -> Adapter: Cliquer sur "Approuver"
+Adapter -> DB: getDatabase()
+activate DB
+Adapter -> CahierDao: updateStatut(cahierId, "APPROUVE")
+note right: dateValidation = System.currentTimeMillis()
+CahierDao --> Adapter: Success
+deactivate DB
+Adapter -> Admin: Afficher message "Cahier approuvé"
+Adapter -> CahierList: Rafraîchir la liste
+deactivate Adapter
+
+CahierList -> DB: getDatabase()
+activate DB
+CahierList -> CahierDao: getAllCahierCharges()
+CahierDao --> CahierList: List<CahierCharges> (mis à jour)
+deactivate DB
+CahierList -> Admin: Afficher liste mise à jour
+deactivate CahierList
+@enduml

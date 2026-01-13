@@ -1,0 +1,71 @@
+@startuml Sequence_CreateSchedule
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+
+title Création d'un Emploi du Temps (Admin)
+
+actor Admin
+participant "DashboardActivity" as Dashboard
+participant "EmploiTempsActivity" as ScheduleList
+participant "EmploiTempsEditActivity" as ScheduleEdit
+participant "AppDatabase" as DB
+participant "EmploiTempsDao" as EmploiDao
+participant "UserDao" as UserDao
+participant "ModuleDao" as ModuleDao
+
+Admin -> Dashboard: Cliquer sur "Élaborer emploi du temps"
+Dashboard -> ScheduleList: Naviguer avec USER_ID
+activate ScheduleList
+
+ScheduleList -> DB: getDatabase()
+activate DB
+ScheduleList -> UserDao: getUserById(USER_ID)
+UserDao --> ScheduleList: User (ADMIN)
+ScheduleList -> EmploiDao: getAllEmploiTemps()
+EmploiDao --> ScheduleList: List<EmploiTemps>
+ScheduleList -> ModuleDao: getAllModules()
+ModuleDao --> ScheduleList: List<Module>
+ScheduleList -> UserDao: getAllUsers()
+UserDao --> ScheduleList: List<User>
+deactivate DB
+
+ScheduleList -> Admin: Afficher liste des emplois
+Admin -> ScheduleList: Cliquer sur "Ajouter"
+ScheduleList -> ScheduleEdit: Naviguer avec USER_ID
+deactivate ScheduleList
+activate ScheduleEdit
+
+ScheduleEdit -> DB: getDatabase()
+activate DB
+ScheduleEdit -> UserDao: getAllUsers()
+UserDao --> ScheduleEdit: List<User> (professeurs)
+ScheduleEdit -> ModuleDao: getAllModules()
+ModuleDao --> ScheduleEdit: List<Module>
+deactivate DB
+
+ScheduleEdit -> Admin: Afficher formulaire
+Admin -> ScheduleEdit: Sélectionner professeur
+Admin -> ScheduleEdit: Sélectionner module
+Admin -> ScheduleEdit: Sélectionner jour
+Admin -> ScheduleEdit: Sélectionner heures (TimePicker)
+Admin -> ScheduleEdit: Saisir salle
+Admin -> ScheduleEdit: Sélectionner type de cours
+Admin -> ScheduleEdit: Cliquer sur "Enregistrer"
+
+ScheduleEdit -> ScheduleEdit: Valider les champs
+ScheduleEdit -> DB: getDatabase()
+activate DB
+ScheduleEdit -> EmploiDao: insert(EmploiTemps)
+EmploiDao --> ScheduleEdit: Success
+deactivate DB
+ScheduleEdit -> Admin: Afficher message de succès
+ScheduleEdit -> ScheduleList: Retour à la liste
+deactivate ScheduleEdit
+activate ScheduleList
+ScheduleList -> EmploiDao: getAllEmploiTemps()
+EmploiDao --> ScheduleList: List<EmploiTemps> (mis à jour)
+ScheduleList -> Admin: Afficher liste mise à jour
+deactivate ScheduleList
+@enduml

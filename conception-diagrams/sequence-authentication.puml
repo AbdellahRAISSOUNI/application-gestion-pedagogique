@@ -1,0 +1,53 @@
+@startuml Sequence_Authentication
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+
+title Séquence d'Authentification
+
+actor User
+participant "WelcomeActivity" as Welcome
+participant "LoginActivity" as Login
+participant "AppDatabase" as DB
+participant "UserDao" as UserDao
+participant "HomeActivity" as Home
+participant "DashboardActivity" as Dashboard
+
+User -> Welcome: Ouvrir l'application
+activate Welcome
+Welcome -> User: Afficher page d'accueil
+User -> Welcome: Cliquer sur "Se connecter"
+Welcome -> Login: Naviguer vers LoginActivity
+deactivate Welcome
+activate Login
+
+User -> Login: Saisir username et password
+User -> Login: Cliquer sur "Connexion"
+Login -> DB: getDatabase()
+activate DB
+DB -> UserDao: getUserByUsername(username)
+activate UserDao
+UserDao --> DB: User object
+deactivate UserDao
+DB --> Login: User object
+deactivate DB
+
+alt Authentification réussie
+  Login -> Login: Vérifier password
+  Login -> Home: Naviguer avec USER_ID
+  activate Home
+  Home -> DB: getUserById(USER_ID)
+  activate DB
+  DB --> Home: User object
+  deactivate DB
+  Home -> User: Afficher informations utilisateur
+  Home -> Dashboard: Naviguer après 2 secondes
+  deactivate Home
+  activate Dashboard
+  Dashboard -> User: Afficher tableau de bord
+else Authentification échouée
+  Login -> User: Afficher message d'erreur
+end
+deactivate Login
+@enduml

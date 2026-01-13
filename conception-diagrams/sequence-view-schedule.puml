@@ -1,0 +1,42 @@
+@startuml Sequence_ViewSchedule
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+
+title Consultation d'Emploi du Temps (Professeur)
+
+actor Professor
+participant "DashboardActivity" as Dashboard
+participant "EmploiTempsActivity" as ScheduleList
+participant "AppDatabase" as DB
+participant "EmploiTempsDao" as EmploiDao
+participant "ModuleDao" as ModuleDao
+participant "UserDao" as UserDao
+
+Professor -> Dashboard: Cliquer sur "Consulter emploi du temps"
+Dashboard -> ScheduleList: Naviguer avec USER_ID
+activate ScheduleList
+
+ScheduleList -> DB: getDatabase()
+activate DB
+ScheduleList -> UserDao: getUserById(USER_ID)
+UserDao --> ScheduleList: User (PROFESSEUR_ASSISTANT ou PROFESSEUR_VACATAIRE)
+ScheduleList -> EmploiDao: getEmploiTempsByProfesseur(USER_ID)
+EmploiDao --> ScheduleList: List<EmploiTemps>
+deactivate DB
+
+loop Pour chaque EmploiTemps
+  ScheduleList -> DB: getDatabase()
+  activate DB
+  ScheduleList -> ModuleDao: getModuleById(moduleId)
+  ModuleDao --> ScheduleList: Module
+  deactivate DB
+end
+
+ScheduleList -> Professor: Afficher liste des emplois (lecture seule)
+Professor -> ScheduleList: Rechercher par module/jour/salle
+ScheduleList -> ScheduleList: Filtrer les résultats
+ScheduleList -> Professor: Afficher résultats filtrés
+deactivate ScheduleList
+@enduml

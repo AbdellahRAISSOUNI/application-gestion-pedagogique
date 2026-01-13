@@ -1,0 +1,560 @@
+@startuml Class Diagram - Gestion Pédagogique
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+
+title Diagramme de Classes\nApplication de Gestion Pédagogique ENSA Tétouan
+
+' ==========================================
+' Database Layer
+' ==========================================
+package "Database Layer" #E8F4F8 {
+  
+  abstract class AppDatabase {
+    - INSTANCE : AppDatabase
+    + getDatabase(context: Context) : AppDatabase
+    + destroyInstance() : void
+    + userDao() : UserDao
+    + formationDao() : FormationDao
+    + moduleDao() : ModuleDao
+    + cahierChargesDao() : CahierChargesDao
+    + reunionDao() : ReunionDao
+    + reunionParticipantDao() : ReunionParticipantDao
+    + emploiTempsDao() : EmploiTempsDao
+  }
+  
+  class DatabaseInitializer {
+    + initializeDatabase(context: Context) : void
+    + addEmploiTempsIfMissing(context: Context) : void
+  }
+}
+
+' ==========================================
+' Entities
+' ==========================================
+package "Entities" #FFF4E6 {
+  
+  class User {
+    + id : long {PK, auto}
+    + username : String {unique}
+    + password : String
+    + userType : String {ADMIN, PROFESSEUR_ASSISTANT, PROFESSEUR_VACATAIRE}
+    + fullName : String
+    + email : String
+    + phone : String
+    + User()
+    + User(username, password, userType, fullName, email, phone)
+  }
+  
+  class Formation {
+    + id : long {PK, auto}
+    + type : String {INITIALE, CONTINUE}
+    + cycle : String {PREPARATOIRE, INGENIEUR, MASTER, DCA, DCESS}
+    + title : String
+    + description : String
+    + status : String {EN_ATTENTE, APPROUVEE, REFUSEE}
+    + createdDate : long
+    + validatedDate : long
+    + createdByUserId : long {FK -> User}
+    + Formation()
+    + Formation(type, cycle, title, description, createdByUserId)
+  }
+  
+  class Module {
+    + id : long {PK, auto}
+    + code : String
+    + nom : String
+    + volumeHoraire : int
+    + formationId : long {FK -> Formation}
+    + professeurId : Long {FK -> User, nullable}
+    + Module()
+    + Module(code, nom, volumeHoraire, formationId)
+  }
+  
+  class CahierCharges {
+    + id : long {PK, auto}
+    + titre : String
+    + type : String {FORMATION_INITIALE, FORMATION_CONTINUE}
+    + filePath : String
+    + auteurId : long {FK -> User}
+    + formationId : Long {FK -> Formation, nullable}
+    + statut : String {BROUILLON, ENVOYE, APPROUVE, REFUSE}
+    + dateCreation : long
+    + dateValidation : Long {nullable}
+    + CahierCharges()
+    + CahierCharges(titre, type, auteurId)
+  }
+  
+  class Reunion {
+    + id : long {PK, auto}
+    + titre : String
+    + dateHeure : long {timestamp}
+    + organisateurId : long {FK -> User}
+    + ordreDuJour : String
+    + statut : String {PLANIFIEE, EN_COURS, TERMINEE}
+    + Reunion()
+    + Reunion(titre, dateHeure, organisateurId, ordreDuJour)
+  }
+  
+  class ReunionParticipant {
+    + id : long {PK, auto}
+    + reunionId : long {FK -> Reunion}
+    + userId : long {FK -> User}
+    + present : boolean
+    + ReunionParticipant()
+    + ReunionParticipant(reunionId, userId)
+  }
+  
+  class EmploiTemps {
+    + id : long {PK, auto}
+    + professeurId : long {FK -> User}
+    + moduleId : long {FK -> Module}
+    + jourSemaine : String {LUNDI, MARDI, MERCREDI, JEUDI, VENDREDI, SAMEDI}
+    + heureDebut : String {format: "HH:mm"}
+    + heureFin : String {format: "HH:mm"}
+    + salle : String
+    + typeCours : String {CM, TD, TP}
+    + EmploiTemps()
+    + EmploiTemps(professeurId, moduleId, jourSemaine, heureDebut, heureFin, salle, typeCours)
+  }
+}
+
+' ==========================================
+' DAOs (Data Access Objects)
+' ==========================================
+package "DAOs" #E8F5E9 {
+  
+  interface UserDao {
+    + getUserById(id: long) : User
+    + getUserByUsername(username: String) : User
+    + getAllUsers() : List<User>
+    + insert(user: User) : void
+    + update(user: User) : void
+    + delete(user: User) : void
+  }
+  
+  interface FormationDao {
+    + getFormationById(id: long) : Formation
+    + getAllFormations() : List<Formation>
+    + getFormationsByType(type: String) : List<Formation>
+    + getFormationsByStatus(status: String) : List<Formation>
+    + insert(formation: Formation) : void
+    + update(formation: Formation) : void
+    + delete(formation: Formation) : void
+  }
+  
+  interface ModuleDao {
+    + getModuleById(id: long) : Module
+    + getAllModules() : List<Module>
+    + getModulesByFormation(formationId: long) : List<Module>
+    + getModulesByProfesseur(professeurId: long) : List<Module>
+    + insert(module: Module) : void
+    + update(module: Module) : void
+    + delete(module: Module) : void
+  }
+  
+  interface CahierChargesDao {
+    + getCahierChargesById(id: long) : CahierCharges
+    + getAllCahierCharges() : List<CahierCharges>
+    + getCahierChargesByAuteur(auteurId: long) : List<CahierCharges>
+    + getCahierChargesByStatut(statut: String) : List<CahierCharges>
+    + insert(cahier: CahierCharges) : void
+    + update(cahier: CahierCharges) : void
+    + delete(cahier: CahierCharges) : void
+    + updateStatut(id: long, statut: String) : void
+  }
+  
+  interface ReunionDao {
+    + getReunionById(id: long) : Reunion
+    + getAllReunions() : List<Reunion>
+    + getReunionsByDateRange(startDate: long, endDate: long) : List<Reunion>
+    + getReunionsByOrganisateur(organisateurId: long) : List<Reunion>
+    + insert(reunion: Reunion) : void
+    + update(reunion: Reunion) : void
+    + delete(reunion: Reunion) : void
+  }
+  
+  interface ReunionParticipantDao {
+    + getParticipantById(id: long) : ReunionParticipant
+    + getParticipantsByReunion(reunionId: long) : List<ReunionParticipant>
+    + getReunionsByUser(userId: long) : List<ReunionParticipant>
+    + insert(participant: ReunionParticipant) : void
+    + update(participant: ReunionParticipant) : void
+    + delete(participant: ReunionParticipant) : void
+  }
+  
+  interface EmploiTempsDao {
+    + getEmploiTempsById(id: long) : EmploiTemps
+    + getAllEmploiTemps() : List<EmploiTemps>
+    + getEmploiTempsByProfesseur(professeurId: long) : List<EmploiTemps>
+    + getEmploiTempsByModule(moduleId: long) : List<EmploiTemps>
+    + insert(emploi: EmploiTemps) : void
+    + update(emploi: EmploiTemps) : void
+    + delete(emploi: EmploiTemps) : void
+  }
+}
+
+' ==========================================
+' Activities
+' ==========================================
+package "Activities" #F3E5F5 {
+  
+  class WelcomeActivity {
+    - onCreate(savedInstanceState: Bundle) : void
+    - initializeViews() : void
+    - navigateToLogin() : void
+  }
+  
+  class LoginActivity {
+    - usernameInput : TextInputEditText
+    - passwordInput : TextInputEditText
+    - loginButton : MaterialButton
+    - rememberMeCheckbox : MaterialCheckBox
+    - onCreate(savedInstanceState: Bundle) : void
+    - initializeViews() : void
+    - setupListeners() : void
+    - handleLogin() : void
+  }
+  
+  class HomeActivity {
+    - welcomeText : TextView
+    - userNameText : TextView
+    - userTypeText : TextView
+    - userId : long
+    - onCreate(savedInstanceState: Bundle) : void
+    - initializeViews() : void
+    - loadUserInfo() : void
+    - translateUserType(userType: String) : String
+  }
+  
+  class DashboardActivity {
+    - userNameText : TextView
+    - userTypeText : TextView
+    - menuContainer : LinearLayout
+    - statisticsContainer : LinearLayout
+    - userId : long
+    - userType : String
+    - onCreate(savedInstanceState: Bundle) : void
+    - initializeViews() : void
+    - loadUserInfo() : void
+    - setupMenu() : void
+    - loadStatistics() : void
+    - addMenuCard(title, iconResId, onClickListener) : void
+    - addStatCard(title, value, colorResId, iconResId) : void
+  }
+  
+  class FormationActivity {
+    - recyclerView : RecyclerView
+    - adapter : FormationAdapter
+    - searchEditText : EditText
+    - userId : long
+    - userType : String
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadUserTypeAndFormations() : void
+    - setupSearch() : void
+    - filterItems(query: String) : void
+  }
+  
+  class FormationEditActivity {
+    - titleInput : TextInputEditText
+    - typeSpinner : Spinner
+    - cycleSpinner : Spinner
+    - descriptionInput : TextInputEditText
+    - userId : long
+    - formationId : long
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadFormationData() : void
+    - saveFormation() : void
+  }
+  
+  class CahierChargesActivity {
+    - recyclerView : RecyclerView
+    - adapter : CahierChargesAdapter
+    - searchEditText : EditText
+    - userId : long
+    - userType : String
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadUserTypeAndCahiers() : void
+    - setupSearch() : void
+    - filterItems(query: String) : void
+  }
+  
+  class CahierChargesEditActivity {
+    - titreInput : TextInputEditText
+    - typeSpinner : Spinner
+    - formationSpinner : Spinner
+    - filePathTextView : TextView
+    - userId : long
+    - cahierId : long
+    - fileUri : Uri
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadCahierData() : void
+    - selectFile() : void
+    - saveCahier() : void
+  }
+  
+  class ReunionActivity {
+    - recyclerView : RecyclerView
+    - adapter : ReunionAdapter
+    - searchEditText : EditText
+    - userId : long
+    - userType : String
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadUserTypeAndReunions() : void
+    - setupSearch() : void
+    - filterItems(query: String) : void
+  }
+  
+  class ReunionEditActivity {
+    - titreInput : TextInputEditText
+    - dateButton : MaterialButton
+    - timeButton : MaterialButton
+    - ordreDuJourInput : TextInputEditText
+    - participantsContainer : LinearLayout
+    - userId : long
+    - reunionId : long
+    - selectedDate : long
+    - selectedParticipants : List<Long>
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadReunionData() : void
+    - showDatePicker() : void
+    - showTimePicker() : void
+    - loadParticipants() : void
+    - saveReunion() : void
+  }
+  
+  class EmploiTempsActivity {
+    - recyclerView : RecyclerView
+    - adapter : EmploiTempsAdapter
+    - searchEditText : EditText
+    - userId : long
+    - userType : String
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadEmploiTemps() : void
+    - setupSearch() : void
+    - filterItems(query: String) : void
+  }
+  
+  class EmploiTempsEditActivity {
+    - professeurSpinner : Spinner
+    - moduleSpinner : Spinner
+    - jourSpinner : Spinner
+    - heureDebutButton : MaterialButton
+    - heureFinButton : MaterialButton
+    - salleInput : TextInputEditText
+    - typeCoursSpinner : Spinner
+    - userId : long
+    - emploiId : long
+    - selectedHeureDebut : String
+    - selectedHeureFin : String
+    - onCreate(savedInstanceState: Bundle) : void
+    - loadEmploiData() : void
+    - showTimePicker(isDebut: boolean) : void
+    - saveEmploiTemps() : void
+  }
+}
+
+' ==========================================
+' Adapters
+' ==========================================
+package "Adapters" #FFF9C4 {
+  
+  class FormationAdapter {
+    - items : List<FormationItem>
+    - userId : long
+    - userType : String
+    - context : Context
+    + onCreateViewHolder(parent, viewType) : ViewHolder
+    + onBindViewHolder(holder, position) : void
+    + getItemCount() : int
+    + updateItems(newItems: List<FormationItem>) : void
+  }
+  
+  class CahierChargesAdapter {
+    - items : List<CahierChargesItem>
+    - userId : long
+    - userType : String
+    - context : Context
+    + onCreateViewHolder(parent, viewType) : ViewHolder
+    + onBindViewHolder(holder, position) : void
+    + getItemCount() : int
+    + updateItems(newItems: List<CahierChargesItem>) : void
+  }
+  
+  class ReunionAdapter {
+    - items : List<ReunionItem>
+    - userId : long
+    - userType : String
+    - context : Context
+    + onCreateViewHolder(parent, viewType) : ViewHolder
+    + onBindViewHolder(holder, position) : void
+    + getItemCount() : int
+    + updateItems(newItems: List<ReunionItem>) : void
+  }
+  
+  class EmploiTempsAdapter {
+    - items : List<EmploiTempsItem>
+    - userType : String
+    - userId : long
+    - context : Context
+    + onCreateViewHolder(parent, viewType) : ViewHolder
+    + onBindViewHolder(holder, position) : void
+    + getItemCount() : int
+    + updateItems(newItems: List<EmploiTempsItem>) : void
+  }
+  
+  class UserSpinnerAdapter {
+    - users : List<User>
+    - context : Context
+    + getCount() : int
+    + getItem(position: int) : User
+    + getView(position, convertView, parent) : View
+  }
+  
+  class ModuleSpinnerAdapter {
+    - modules : List<Module>
+    - context : Context
+    + getCount() : int
+    + getItem(position: int) : Module
+    + getView(position, convertView, parent) : View
+  }
+  
+  class FormationSpinnerAdapter {
+    - formations : List<Formation>
+    - context : Context
+    + getCount() : int
+    + getItem(position: int) : Formation
+    + getView(position, convertView, parent) : View
+  }
+}
+
+' ==========================================
+' Application Class
+' ==========================================
+package "Application" #E1F5FE {
+  class GestionPedagogiqueApp {
+    - onCreate() : void
+    - initializeDatabase() : void
+  }
+}
+
+' ==========================================
+' Relationships
+' ==========================================
+
+' Database relationships
+AppDatabase --> UserDao
+AppDatabase --> FormationDao
+AppDatabase --> ModuleDao
+AppDatabase --> CahierChargesDao
+AppDatabase --> ReunionDao
+AppDatabase --> ReunionParticipantDao
+AppDatabase --> EmploiTempsDao
+
+' Entity relationships
+Formation "1" --> "*" Module : contains
+User "1" --> "*" Formation : creates
+User "1" --> "*" Module : teaches
+User "1" --> "*" CahierCharges : authors
+Formation "0..1" --> "*" CahierCharges : linked to
+User "1" --> "*" Reunion : organizes
+Reunion "1" --> "*" ReunionParticipant : has
+User "1" --> "*" ReunionParticipant : participates
+User "1" --> "*" EmploiTemps : has schedule
+Module "1" --> "*" EmploiTemps : scheduled in
+
+' DAO to Entity relationships
+UserDao ..> User : manages
+FormationDao ..> Formation : manages
+ModuleDao ..> Module : manages
+CahierChargesDao ..> CahierCharges : manages
+ReunionDao ..> Reunion : manages
+ReunionParticipantDao ..> ReunionParticipant : manages
+EmploiTempsDao ..> EmploiTemps : manages
+
+' Activity to Database relationships
+LoginActivity --> AppDatabase : uses
+HomeActivity --> AppDatabase : uses
+DashboardActivity --> AppDatabase : uses
+FormationActivity --> AppDatabase : uses
+FormationEditActivity --> AppDatabase : uses
+CahierChargesActivity --> AppDatabase : uses
+CahierChargesEditActivity --> AppDatabase : uses
+ReunionActivity --> AppDatabase : uses
+ReunionEditActivity --> AppDatabase : uses
+EmploiTempsActivity --> AppDatabase : uses
+EmploiTempsEditActivity --> AppDatabase : uses
+
+' Activity to Adapter relationships
+FormationActivity --> FormationAdapter : uses
+CahierChargesActivity --> CahierChargesAdapter : uses
+ReunionActivity --> ReunionAdapter : uses
+EmploiTempsActivity --> EmploiTempsAdapter : uses
+EmploiTempsEditActivity --> UserSpinnerAdapter : uses
+EmploiTempsEditActivity --> ModuleSpinnerAdapter : uses
+CahierChargesEditActivity --> FormationSpinnerAdapter : uses
+
+' Navigation relationships
+WelcomeActivity --> LoginActivity : navigates to
+LoginActivity --> HomeActivity : navigates to
+HomeActivity --> DashboardActivity : navigates to
+DashboardActivity --> FormationActivity : navigates to
+DashboardActivity --> CahierChargesActivity : navigates to
+DashboardActivity --> ReunionActivity : navigates to
+DashboardActivity --> EmploiTempsActivity : navigates to
+FormationActivity --> FormationEditActivity : navigates to
+CahierChargesActivity --> CahierChargesEditActivity : navigates to
+ReunionActivity --> ReunionEditActivity : navigates to
+EmploiTempsActivity --> EmploiTempsEditActivity : navigates to
+
+' Application initialization
+GestionPedagogiqueApp --> DatabaseInitializer : initializes
+DatabaseInitializer --> AppDatabase : initializes
+
+note right of User
+  Types d'utilisateurs:
+  - ADMIN (Directeur Adjoint)
+  - PROFESSEUR_ASSISTANT
+  - PROFESSEUR_VACATAIRE
+end note
+
+note right of Formation
+  Types:
+  - INITIALE (cycles: PREPARATOIRE, INGENIEUR, MASTER)
+  - CONTINUE (cycles: DCA, DCESS)
+  
+  Statuts:
+  - EN_ATTENTE
+  - APPROUVEE
+  - REFUSEE
+end note
+
+note right of CahierCharges
+  Statuts:
+  - BROUILLON (créé par Assistant)
+  - ENVOYE (envoyé au Directeur)
+  - APPROUVE (approuvé par Admin)
+  - REFUSE (refusé par Admin)
+end note
+
+note right of Reunion
+  Statuts:
+  - PLANIFIEE
+  - EN_COURS
+  - TERMINEE
+end note
+
+note right of EmploiTemps
+  Jours: LUNDI, MARDI, MERCREDI,
+  JEUDI, VENDREDI, SAMEDI
+  
+  Types de cours:
+  - CM (Cours Magistral)
+  - TD (Travaux Dirigés)
+  - TP (Travaux Pratiques)
+end note
+
+@enduml

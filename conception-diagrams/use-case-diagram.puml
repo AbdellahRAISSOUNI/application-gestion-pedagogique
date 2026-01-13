@@ -1,0 +1,138 @@
+@startuml Use Case Diagram - Gestion Pédagogique
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 12
+skinparam defaultFontName Arial
+left to right direction
+
+title Diagramme de Cas d'Utilisation\nApplication de Gestion Pédagogique ENSA Tétouan
+
+' Actors on the left side
+actor "Directeur Adjoint\n(Admin)" as Admin #1E3A8A
+
+' Use Cases - Authentication
+rectangle "Authentification" {
+  usecase "Se connecter" as UC_Login
+  usecase "Se déconnecter" as UC_Logout
+  usecase "Consulter la page d'accueil" as UC_Welcome
+}
+
+' Use Cases - Admin
+rectangle "Gestion des Formations" {
+  usecase "Consulter les formations" as UC_ViewFormations
+  usecase "Créer une formation" as UC_CreateFormation
+  usecase "Modifier une formation" as UC_EditFormation
+  usecase "Valider/Refuser une formation" as UC_ValidateFormation
+  usecase "Gérer les modules" as UC_ManageModules
+}
+
+rectangle "Gestion des Réunions" {
+  usecase "Consulter les réunions" as UC_ViewReunions
+  usecase "Planifier une réunion" as UC_PlanReunion
+  usecase "Modifier une réunion" as UC_EditReunion
+  usecase "Sélectionner les participants" as UC_SelectParticipants
+}
+
+rectangle "Gestion des Cahiers de Charges" {
+  usecase "Consulter tous les cahiers" as UC_ViewAllCahiers
+  usecase "Approuver un cahier" as UC_ApproveCahier
+  usecase "Refuser un cahier" as UC_RefuseCahier
+}
+
+rectangle "Gestion des Emplois du Temps" {
+  usecase "Consulter tous les emplois" as UC_ViewAllSchedules
+  usecase "Créer un emploi du temps" as UC_CreateSchedule
+  usecase "Modifier un emploi du temps" as UC_EditSchedule
+}
+
+' Use Cases - Professeur Assistant
+rectangle "Cahiers de Charges (Assistant)" {
+  usecase "Créer un cahier de charges" as UC_CreateCahier
+  usecase "Modifier un cahier (brouillon)" as UC_EditCahierDraft
+  usecase "Envoyer un cahier" as UC_SendCahier
+  usecase "Consulter mes cahiers" as UC_ViewMyCahiers
+  usecase "Télécharger un fichier" as UC_UploadFile
+}
+
+rectangle "Consultation (Assistant)" {
+  usecase "Consulter mon emploi du temps" as UC_ViewMySchedule
+  usecase "Consulter les réunions" as UC_ViewReunionsAssistant
+}
+
+' Use Cases - Professeur Vacataire
+rectangle "Consultation (Vacataire)" {
+  usecase "Consulter mon emploi du temps" as UC_ViewScheduleVacataire
+  usecase "Consulter les réunions" as UC_ViewReunionsVacataire
+}
+
+' Actors on the right side
+actor "Professeur Assistant" as ProfAssistant #F97316
+actor "Professeur Vacataire" as ProfVacataire #10B981
+
+' Relationships - Admin
+Admin --> UC_Login
+Admin --> UC_Logout
+Admin --> UC_Welcome
+Admin --> UC_ViewFormations
+Admin --> UC_CreateFormation
+Admin --> UC_EditFormation
+Admin --> UC_ValidateFormation
+Admin --> UC_ManageModules
+Admin --> UC_ViewReunions
+Admin --> UC_PlanReunion
+Admin --> UC_EditReunion
+Admin --> UC_SelectParticipants
+Admin --> UC_ViewAllCahiers
+Admin --> UC_ApproveCahier
+Admin --> UC_RefuseCahier
+Admin --> UC_ViewAllSchedules
+Admin --> UC_CreateSchedule
+Admin --> UC_EditSchedule
+
+' Relationships - Professeur Assistant
+ProfAssistant --> UC_Login
+ProfAssistant --> UC_Logout
+ProfAssistant --> UC_Welcome
+ProfAssistant --> UC_CreateCahier
+ProfAssistant --> UC_EditCahierDraft
+ProfAssistant --> UC_SendCahier
+ProfAssistant --> UC_ViewMyCahiers
+ProfAssistant --> UC_UploadFile
+ProfAssistant --> UC_ViewMySchedule
+ProfAssistant --> UC_ViewReunionsAssistant
+
+' Relationships - Professeur Vacataire
+ProfVacataire --> UC_Login
+ProfVacataire --> UC_Logout
+ProfVacataire --> UC_Welcome
+ProfVacataire --> UC_ViewScheduleVacataire
+ProfVacataire --> UC_ViewReunionsVacataire
+
+' Extend relationships
+UC_PlanReunion ..> UC_SelectParticipants : <<extend>>
+UC_CreateCahier ..> UC_UploadFile : <<extend>>
+UC_EditCahierDraft ..> UC_UploadFile : <<extend>>
+
+' Include relationships
+UC_ViewFormations ..> UC_ManageModules : <<include>>
+UC_PlanReunion ..> UC_SelectParticipants : <<include>>
+
+note left of Admin
+  Le Directeur Adjoint a
+  tous les droits d'administration
+  sur le système
+end note
+
+note right of ProfAssistant
+  Le Professeur Assistant peut
+  créer et envoyer des cahiers
+  de charges
+end note
+
+note right of ProfVacataire
+  Le Professeur Vacataire a
+  uniquement des droits de
+  consultation
+end note
+
+@enduml

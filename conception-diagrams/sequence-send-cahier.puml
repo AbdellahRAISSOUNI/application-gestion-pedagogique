@@ -1,0 +1,76 @@
+@startuml Sequence_SendCahier
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+
+title Envoi d'un Cahier de Charges (Professeur Assistant)
+
+actor ProfAssistant
+participant "DashboardActivity" as Dashboard
+participant "CahierChargesActivity" as CahierList
+participant "CahierChargesEditActivity" as CahierEdit
+participant "AppDatabase" as DB
+participant "CahierChargesDao" as CahierDao
+participant "FormationDao" as FormationDao
+participant "StorageAccessFramework" as SAF
+
+ProfAssistant -> Dashboard: Cliquer sur "Envoyer cahier de charges"
+Dashboard -> CahierList: Naviguer avec USER_ID
+activate CahierList
+
+CahierList -> DB: getDatabase()
+activate DB
+CahierList -> CahierDao: getCahierChargesByAuteur(USER_ID)
+CahierDao --> CahierList: List<CahierCharges>
+deactivate DB
+
+CahierList -> ProfAssistant: Afficher mes cahiers
+ProfAssistant -> CahierList: Cliquer sur "Ajouter"
+CahierList -> CahierEdit: Naviguer avec USER_ID
+deactivate CahierList
+activate CahierEdit
+
+CahierEdit -> DB: getDatabase()
+activate DB
+CahierEdit -> FormationDao: getAllFormations()
+FormationDao --> CahierEdit: List<Formation>
+deactivate DB
+
+CahierEdit -> ProfAssistant: Afficher formulaire
+ProfAssistant -> CahierEdit: Saisir titre
+ProfAssistant -> CahierEdit: Sélectionner type
+ProfAssistant -> CahierEdit: Sélectionner formation (optionnel)
+ProfAssistant -> CahierEdit: Cliquer sur "Choisir fichier"
+
+CahierEdit -> SAF: Ouvrir file picker
+activate SAF
+SAF -> ProfAssistant: Afficher sélecteur de fichiers
+ProfAssistant -> SAF: Sélectionner fichier (PDF/image)
+SAF --> CahierEdit: URI du fichier
+deactivate SAF
+
+CahierEdit -> CahierEdit: Sauvegarder URI avec permissions
+ProfAssistant -> CahierEdit: Cliquer sur "Enregistrer (Brouillon)"
+
+CahierEdit -> CahierEdit: Valider les champs
+CahierEdit -> DB: getDatabase()
+activate DB
+CahierEdit -> CahierDao: insert(CahierCharges)
+note right: statut = "BROUILLON"
+CahierDao --> CahierEdit: Success
+deactivate DB
+CahierEdit -> ProfAssistant: Afficher message de succès
+CahierEdit -> CahierList: Retour à la liste
+deactivate CahierEdit
+activate CahierList
+
+ProfAssistant -> CahierList: Cliquer sur "Envoyer" (sur un brouillon)
+CahierList -> DB: getDatabase()
+activate DB
+CahierList -> CahierDao: updateStatut(cahierId, "ENVOYE")
+CahierDao --> CahierList: Success
+deactivate DB
+CahierList -> ProfAssistant: Afficher message "Cahier envoyé"
+deactivate CahierList
+@enduml

@@ -1,0 +1,69 @@
+@startuml Sequence_PlanMeeting
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+
+title Planification d'une Réunion (Admin)
+
+actor Admin
+participant "DashboardActivity" as Dashboard
+participant "ReunionActivity" as ReunionList
+participant "ReunionEditActivity" as ReunionEdit
+participant "AppDatabase" as DB
+participant "ReunionDao" as ReunionDao
+participant "ReunionParticipantDao" as ParticipantDao
+participant "UserDao" as UserDao
+
+Admin -> Dashboard: Cliquer sur "Planifier une réunion"
+Dashboard -> ReunionList: Naviguer avec USER_ID
+activate ReunionList
+
+ReunionList -> DB: getDatabase()
+activate DB
+ReunionList -> ReunionDao: getAllReunions()
+ReunionDao --> ReunionList: List<Reunion>
+ReunionList -> UserDao: getAllUsers()
+UserDao --> ReunionList: List<User>
+deactivate DB
+
+ReunionList -> Admin: Afficher liste des réunions
+Admin -> ReunionList: Cliquer sur "Planifier une réunion"
+ReunionList -> ReunionEdit: Naviguer avec USER_ID
+deactivate ReunionList
+activate ReunionEdit
+
+ReunionEdit -> DB: getDatabase()
+activate DB
+ReunionEdit -> UserDao: getAllUsers()
+UserDao --> ReunionEdit: List<User> (participants potentiels)
+deactivate DB
+
+ReunionEdit -> Admin: Afficher formulaire
+Admin -> ReunionEdit: Saisir titre
+Admin -> ReunionEdit: Sélectionner date (DatePicker)
+Admin -> ReunionEdit: Sélectionner heure (TimePicker)
+Admin -> ReunionEdit: Saisir ordre du jour
+Admin -> ReunionEdit: Sélectionner participants (checkboxes)
+Admin -> ReunionEdit: Cliquer sur "Enregistrer"
+
+ReunionEdit -> ReunionEdit: Valider les champs
+ReunionEdit -> DB: getDatabase()
+activate DB
+ReunionEdit -> ReunionDao: insert(Reunion)
+ReunionDao --> ReunionEdit: reunionId
+
+loop Pour chaque participant sélectionné
+  ReunionEdit -> ParticipantDao: insert(ReunionParticipant)
+  ParticipantDao --> ReunionEdit: Success
+end
+deactivate DB
+ReunionEdit -> Admin: Afficher message de succès
+ReunionEdit -> ReunionList: Retour à la liste
+deactivate ReunionEdit
+activate ReunionList
+ReunionList -> ReunionDao: getAllReunions()
+ReunionDao --> ReunionList: List<Reunion> (mis à jour)
+ReunionList -> Admin: Afficher liste mise à jour
+deactivate ReunionList
+@enduml
